@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // 색상 배열 정의
 final List<Color> themeColors = [
@@ -15,8 +17,47 @@ class SongInfo {
   bool isTJ;
   bool isKY;
 
-  SongInfo({required this.song, required this.artist, required this.number,this.isTJ = false,this.isKY = false});
+  SongInfo({required this.song, required this.artist, required this.number, this.isTJ = false, this.isKY = false});
+
+  // JSON으로 객체를 변환하는 메서드
+  Map<String, dynamic> toJson() {
+    return {
+      'song': song,
+      'artist': artist,
+      'number': number,
+      'isTJ': isTJ,
+      'isKY': isKY,
+    };
+  }
+
+  // JSON에서 객체로 변환하는 팩토리 생성자
+  factory SongInfo.fromJson(Map<String, dynamic> json) {
+    return SongInfo(
+      song: json['song'],
+      artist: json['artist'],
+      number: json['number'],
+      isTJ: json['isTJ'],
+      isKY: json['isKY'],
+    );
+  }
 }
+
+Future<void> saveSongs(List<SongInfo> songs) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // SongInfo 객체 리스트를 JSON 문자열 리스트로 변환
+  List<String> jsonSongs = songs.map((song) => json.encode(song.toJson())).toList();
+  // JSON 문자열 리스트를 'songs' 키로 저장
+  await prefs.setStringList('songs', jsonSongs);
+}
+
+Future<List<SongInfo>> loadSongs() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // 'songs' 키로 저장된 JSON 문자열 리스트를 로드
+  List<String>? jsonSongs = prefs.getStringList('songs');
+  // JSON 문자열 리스트를 SongInfo 객체 리스트로 변환
+  return jsonSongs?.map((jsonSong) => SongInfo.fromJson(json.decode(jsonSong))).toList() ?? [];
+}
+
 
 List<SongInfo> songsList = [];
 List<bool> checked = List.generate(songsList.length, (index) => false);
