@@ -5,6 +5,11 @@ class SongsState with ChangeNotifier {
   List<SongInfo> songsList = [];
   List<bool> checked = [];
 
+  void addSong(SongInfo songInfo) {
+    songsList.add(songInfo);
+    notifyListeners();
+  }
+
   void deleteSelectedItems() {
     // 체크된 항목들을 삭제합니다.
     for (int i = checked.length - 1; i >= 0; i--) {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../utils/colors.dart';
-
-
-
+import '../models/song_info.dart';
+import '../providers/state_provider.dart';
+import '../providers/theme_provider.dart';
 
 class AddPage extends StatefulWidget {
   @override
@@ -13,11 +15,14 @@ class _AddPageState extends State<AddPage> {
   final TextEditingController songController = TextEditingController();
   final TextEditingController artistController = TextEditingController();
   final TextEditingController numberController = TextEditingController();
+
   bool isTJ = true;
   bool isKY = false;
-  
-  void addSong() {
-    if (songController.text.isEmpty || artistController.text.isEmpty || numberController.text.isEmpty) {
+
+  bool controllerIsEmpty() {
+    if (songController.text.isEmpty ||
+        artistController.text.isEmpty ||
+        numberController.text.isEmpty) {
       // 필드 중 하나라도 비어 있으면 SnackBar를 표시합니다.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -25,24 +30,19 @@ class _AddPageState extends State<AddPage> {
           duration: Duration(seconds: 2), // 메시지 표시 시간
         ),
       );
+      return true;
     } else {
-        setState(() {
-          String song = songController.text;
-          String artist = artistController.text;
-          String number = numberController.text;
-
-          if (song.isNotEmpty && artist.isNotEmpty && number.isNotEmpty) {
-            songsList.add(SongInfo(song: song, artist: artist, number: number,isTJ:isTJ, isKY:isKY));
-            songController.clear();
-            artistController.clear();
-            numberController.clear();
-          }
-        });
-        Navigator.pop(context); // 뒤로 가기
-      }
+      return false;
     }
-  
-    InputDecoration _roundedInputDecoration(String labelText) {
+  }
+
+  void controllerClear() {
+    songController.clear();
+    artistController.clear();
+    numberController.clear();
+  }
+
+  InputDecoration _roundedInputDecoration(String labelText) {
     return InputDecoration(
       labelText: labelText,
       border: OutlineInputBorder(
@@ -52,12 +52,15 @@ class _AddPageState extends State<AddPage> {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(5.0),
         borderSide: BorderSide(color: Colors.blue),
-        ),
-      );
-     }
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final songsState = Provider.of<SongsState>(context);
+    final uiState = Provider.of<UIState>(context);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
@@ -123,64 +126,72 @@ class _AddPageState extends State<AddPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: isTJ ? themeColors[3] : Colors.white,
-                    primary: isTJ ? Colors.white : Colors.black,
-                    minimumSize: Size(120, 45),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      side: BorderSide(color: isTJ ? Colors.transparent : Colors.grey),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: isTJ ? themeColors[3] : Colors.white,
+                      primary: isTJ ? Colors.white : Colors.black,
+                      minimumSize: Size(120, 45),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: BorderSide(
+                            color: isTJ ? Colors.transparent : Colors.grey),
+                      ),
                     ),
+                    onPressed: () {
+                      setState(() {
+                        isTJ = true;
+                        isKY = false;
+                      });
+                    },
+                    child: Text('TJ'),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      isTJ = true;
-                      isKY = false;
-                    });
-                  },
-                  child: Text('TJ'),
-                ),
-                  
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: isKY ? themeColors[3] : Colors.white,
-                    primary: isKY ? Colors.white : Colors.black,
-                    minimumSize: Size(120, 45),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      side: BorderSide(color: isKY ? Colors.transparent : Colors.grey),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: isKY ? themeColors[3] : Colors.white,
+                      primary: isKY ? Colors.white : Colors.black,
+                      minimumSize: Size(120, 45),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: BorderSide(
+                            color: isKY ? Colors.transparent : Colors.grey),
+                      ),
                     ),
+                    onPressed: () {
+                      setState(() {
+                        isTJ = false;
+                        isKY = true;
+                      });
+                    },
+                    child: Text('금영'),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      isTJ = false;
-                      isKY = true;
-                    });
-                  },
-                  child: Text('금영'),
-                ),
-                                   
                 ],
               ),
               SizedBox(height: 200),
               ElevatedButton(
                 style: TextButton.styleFrom(
-                    backgroundColor:  themeColors[3],
-                    primary: Colors.white,  
-                    minimumSize: Size(140, 50),
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
+                  backgroundColor: themeColors[3],
+                  primary: Colors.white,
+                  minimumSize: Size(140, 50),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
+                ),
                 child: Text('추가',
-                        style: TextStyle(fontSize: 15, color: Colors.white)),
+                    style: TextStyle(fontSize: 15, color: Colors.white)),
                 onPressed: () {
-                  addSong();
+                  if(!controllerIsEmpty()){
+                    songsState.addSong(SongInfo(
+                          song: songController.text,
+                          artist: artistController.text,
+                          number: numberController.text,
+                          isTJ: isTJ,
+                          isKY: isKY));
+                    controllerClear();
+                    Navigator.pop(context);
+                  }
                 },
               ),
             ],

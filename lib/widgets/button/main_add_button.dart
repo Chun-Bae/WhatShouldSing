@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../utils/colors.dart';
 import '../../providers/state_provider.dart';
+import '../../screens/add_page.dart';
 
 
-class MainAddButton extends StatelessWidget{
+class MainAddButton extends StatefulWidget {
+  @override
+  _MainAddButton createState() => _MainAddButton();
+}
+
+class _MainAddButton extends State<MainAddButton> {
   Widget build(BuildContext context) {
     final songsState = Provider.of<SongsState>(context);
     return Container(
@@ -22,8 +29,9 @@ class MainAddButton extends StatelessWidget{
             context,
             MaterialPageRoute(builder: (context) => AddPage()),
           ).then((_) {
-            // 뒤로 가기가 실행된 후 이곳에서 setState를 호출하여 위젯을 새로고침합니다.
-            songsState.checked = List.generate(songsState.songsList.length, (index) => false);
+
+              // 뒤로 가기가 실행된 후 이곳에서 setState를 호출하여 위젯을 새로고침합니다.             
+              songsState.checked = List.generate(songsState.songsList.length, (index) => false);
           });
         },
       ),
