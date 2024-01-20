@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../utils/colors.dart';
 import '../models/song_info.dart';
+import '../widgets/appbar/add_page_appbar.dart';
 import '../providers/state_provider.dart';
-
 
 class AddPage extends StatefulWidget {
   @override
@@ -61,32 +61,7 @@ class _AddPageState extends State<AddPage> {
     final songsState = Provider.of<SongsState>(context);
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(3)),
-          child: AppBar(
-            centerTitle: true,
-            elevation: 1,
-            backgroundColor: themeColors[2],
-            title: RichText(
-              text: TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                      text: '뭐부',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
-                  TextSpan(
-                      text: '르지',
-                      style: TextStyle(fontSize: 16, color: Colors.black)),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      appBar: AddPageAppBar(),
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: Container(
@@ -181,13 +156,13 @@ class _AddPageState extends State<AddPage> {
                 child: Text('추가',
                     style: TextStyle(fontSize: 15, color: Colors.white)),
                 onPressed: () {
-                  if(!controllerIsEmpty()){
+                  if (!controllerIsEmpty()) {
                     songsState.addSong(SongInfo(
-                          song: songController.text,
-                          artist: artistController.text,
-                          number: numberController.text,
-                          isTJ: isTJ,
-                          isKY: isKY));
+                        song: songController.text,
+                        artist: artistController.text,
+                        number: numberController.text,
+                        isTJ: isTJ,
+                        isKY: isKY));
                     controllerClear();
                     Navigator.pop(context);
                   }

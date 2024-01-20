@@ -29,7 +29,11 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
                         color: Colors.black)),
                 TextSpan(
                     text: '르지',
-                    style: TextStyle(fontSize: 16, color: Colors.black)),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    )),
               ],
             ),
           ),
