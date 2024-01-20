@@ -4,7 +4,7 @@ import '../../utils/colors.dart';
 import '../../providers/state_provider.dart';
 import 'package:provider/provider.dart';
 
-class DeleteBar extends StatelessWidget{
+class DeleteBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final uiState = Provider.of<UIState>(context);
     final songsState = Provider.of<SongsState>(context);
@@ -22,6 +22,6 @@ class DeleteBar extends StatelessWidget{
           ),
         ),
       ),
-    );  
+    );
   }
 }

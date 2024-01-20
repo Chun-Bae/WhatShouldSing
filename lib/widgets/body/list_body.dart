@@ -41,7 +41,8 @@ class _ListTileBody extends State<ListTileBody> {
                       value: checked[index],
                       activeColor: themeColors[3],
                       onChanged: (bool? value) {
-                        setState(() { // checkbox 색지정을 위해 setState사용
+                        setState(() {
+                          // checkbox 색지정을 위해 setState사용
                           checked[index] = value!;
                         });
                       },

@@ -17,7 +17,8 @@ import 'widgets/bottombar/delete_bar.dart';
 Future<void> saveSongs(List<SongInfo> songs) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   // SongInfo 객체 리스트를 JSON 문자열 리스트로 변환
-  List<String> jsonSongs = songs.map((song) => json.encode(song.toJson())).toList();
+  List<String> jsonSongs =
+      songs.map((song) => json.encode(song.toJson())).toList();
   // JSON 문자열 리스트를 'songs' 키로 저장
   await prefs.setStringList('songs', jsonSongs);
 }
@@ -27,19 +28,21 @@ Future<List<SongInfo>> loadSongs() async {
   // 'songs' 키로 저장된 JSON 문자열 리스트를 로드
   List<String>? jsonSongs = prefs.getStringList('songs');
   // JSON 문자열 리스트를 SongInfo 객체 리스트로 변환
-  return jsonSongs?.map((jsonSong) => SongInfo.fromJson(json.decode(jsonSong))).toList() ?? [];
+  return jsonSongs
+          ?.map((jsonSong) => SongInfo.fromJson(json.decode(jsonSong)))
+          .toList() ??
+      [];
 }
 
-
-
 void main() {
-  runApp(MultiProvider(
+  runApp(
+    MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UIState()),
         ChangeNotifierProvider(create: (context) => SongsState()),
       ],
       child: WhatShouldSing(),
-      ),
+    ),
   );
 }
 
@@ -61,8 +64,8 @@ class KaraokeListScreen extends StatefulWidget {
 
 class _KaraokeListScreenState extends State<KaraokeListScreen> {
   @override
-  Widget build(BuildContext context) {    
-    final isSelectionMode = Provider.of<UIState>(context).isSelectionMode;  
+  Widget build(BuildContext context) {
+    final isSelectionMode = Provider.of<UIState>(context).isSelectionMode;
     final songsList = Provider.of<SongsState>(context).songsList;
 
     return Scaffold(
@@ -70,17 +73,11 @@ class _KaraokeListScreenState extends State<KaraokeListScreen> {
       //AppBar
       appBar: MainAppbar(),
       //Body
-      body: songsList.isEmpty
-      ? EmptyBody()
-      : ListTileBody(),
+      body: songsList.isEmpty ? EmptyBody() : ListTileBody(),
       //BottomBar
-      bottomNavigationBar: isSelectionMode
-          ? DeleteBar()
-          : null,
+      bottomNavigationBar: isSelectionMode ? DeleteBar() : null,
       //AddButton
-      floatingActionButton: isSelectionMode
-          ? null
-          : MainAddButton(),
+      floatingActionButton: isSelectionMode ? null : MainAddButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }

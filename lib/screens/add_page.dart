@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../utils/colors.dart';
 import '../models/song_info.dart';
 import '../providers/state_provider.dart';
-import '../providers/theme_provider.dart';
+
 
 class AddPage extends StatefulWidget {
   @override
@@ -59,7 +59,6 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     final songsState = Provider.of<SongsState>(context);
-    final uiState = Provider.of<UIState>(context);
 
     return Scaffold(
       appBar: PreferredSize(

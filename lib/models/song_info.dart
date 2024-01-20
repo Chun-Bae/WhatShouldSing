@@ -5,7 +5,12 @@ class SongInfo {
   bool isTJ;
   bool isKY;
 
-  SongInfo({required this.song, required this.artist, required this.number, this.isTJ = false, this.isKY = false});
+  SongInfo(
+      {required this.song,
+      required this.artist,
+      required this.number,
+      this.isTJ = false,
+      this.isKY = false});
 
   // JSON으로 객체를 변환하는 메서드
   Map<String, dynamic> toJson() {
