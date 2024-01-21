@@ -9,6 +9,7 @@ class SongsState with ChangeNotifier {
 
   void setSongsList(List<SongInfo> loadedSongs) {
     songsList = loadedSongs;
+    checked = List.generate(songsList.length, (index) => false);
     notifyListeners();
   }
 
