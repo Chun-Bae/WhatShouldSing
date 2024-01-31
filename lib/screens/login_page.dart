@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import '../screens/main_page.dart';
 import 'package:what_should_sing/utils/colors.dart';
 
 class LoginPage extends StatelessWidget {
+  void _navigateToHome(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => KaraokeListScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,16 +68,28 @@ class LoginPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    _buildLoingFunctionButton(name: "로그인"),
-                    _buildLoingFunctionButton(name: "회원 가입"),
+                    _buildLoginFunctionButton(
+                      name: "로그인",
+                      onPressed: () => _navigateToHome(context),
+                    ),
+                    _buildLoginFunctionButton(
+                      name: "회원 가입",
+                      onPressed: () => {},
+                    ),
                   ],
                 ),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    _buildLoingFunctionButton(name: "아이디 찾기"),
-                    _buildLoingFunctionButton(name: "비밀번호 찾기"),
+                    _buildLoginFunctionButton(
+                      name: "아이디 찾기",
+                      onPressed: () => {},
+                    ),
+                    _buildLoginFunctionButton(
+                      name: "비밀번호 찾기",
+                      onPressed: () => {},
+                    ),
                   ],
                 ),
               ],
@@ -80,14 +100,13 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLoingFunctionButton({required String name}) {
+  Widget _buildLoginFunctionButton(
+      {required String name, VoidCallback? onPressed}) {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.only(right: 4),
         child: ElevatedButton(
-          onPressed: () {
-            // 로그인 로직
-          },
+          onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
@@ -105,7 +124,7 @@ class LoginPage extends StatelessWidget {
   Widget _buildTextField({required String label, required bool obscureText}) {
     return TextField(
       decoration: InputDecoration(
-        filled: true, 
+        filled: true,
         fillColor: themeColors[0],
         hintText: label,
         hintStyle: TextStyle(color: Colors.black), // 라벨 텍스트 색상을 흰색으로 설정

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '../utils/colors.dart';
-import '../screens/main_page.dart';
+
 import '../screens/login_page.dart';
 import '../models/song_info.dart';
 import '../providers/state_provider.dart';
@@ -19,7 +19,7 @@ class _LoadingPageState extends State<LoadingPage> {
   void initState() {
     super.initState();
     _loadSongs();
-    _navigateToHome();
+    _navigateToLogin();
   }
 
   void _loadSongs() async {
@@ -27,12 +27,12 @@ class _LoadingPageState extends State<LoadingPage> {
     Provider.of<SongsState>(context, listen: false).setSongsList(loadedSongs);
   }
 
-  _navigateToHome() async {
+  _navigateToLogin() async {
     await Future.delayed(Duration(seconds: 1), () {});
     Navigator.pushReplacement(
         context, MaterialPageRoute(
           builder: (context) => LoginPage(),
-          //KaraokeListScreen(),
+          
       )
     );
   }
