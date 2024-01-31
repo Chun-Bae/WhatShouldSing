@@ -63,6 +63,8 @@ flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
+firebase_options.dart
+
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -74,6 +76,7 @@ unlinked_spec.ds
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
 *.jks
+google-services.json
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -104,6 +107,10 @@ unlinked_spec.ds
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+GoogleService-Info.plist
+firebase_app_id_file.json
+
+
 
 # macOS
 **/Flutter/ephemeral/
@@ -136,3 +143,16 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 !.vscode/settings.json
+
+### Firebase ###
+.idea
+**/node_modules/*
+**/.firebaserc
+
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
+
+#etc
+.vscode

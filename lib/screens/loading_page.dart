@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import '../utils/colors.dart';
 import '../screens/main_page.dart';
+import '../screens/login_page.dart';
 import '../models/song_info.dart';
 import '../providers/state_provider.dart';
 
@@ -29,7 +30,11 @@ class _LoadingPageState extends State<LoadingPage> {
   _navigateToHome() async {
     await Future.delayed(Duration(seconds: 1), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => KaraokeListScreen()));
+        context, MaterialPageRoute(
+          builder: (context) => LoginPage(),
+          //KaraokeListScreen(),
+      )
+    );
   }
 
   Future<List<SongInfo>> loadSongs() async {
