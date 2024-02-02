@@ -2,27 +2,72 @@ import 'package:flutter/material.dart';
 import '../screens/main_page.dart';
 import '../screens/join_page.dart';
 import 'package:what_should_sing/utils/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginPage extends StatelessWidget {
+final FirebaseAuth _auth = FirebaseAuth.instance;
+User? user;
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future<void> _submitForm(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      // 모든 TextFormField의 검증이 성공했을 때 실행될 로직
+      // 예: 로그인 요청, 데이터베이스 업데이트 등
+
+      try {
+        final credential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: _emailController.text,
+                password: _passwordController.text);
+        _navigateToHome(context);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          print('No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          print('Wrong password provided for that user.');
+        } else if(e.code == "too-many-requests"){ 
+          print('요청 수가 최대 허용치를 초과합니다.');
+        }
+        else{
+          print(e);
+        }
+      }
+    }
+  }
+
   void _navigateToHome(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => KaraokeListScreen()),
     );
   }
+
   void _navigateToJoin(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => JoinPage()),
     );
   }
-    void _navigateToFind_ID(BuildContext context) {
+
+  void _navigateToFind_ID(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => KaraokeListScreen()),
     );
   }
-      void _navigateToFind_PW(BuildContext context) {
+
+  void _navigateToFind_PW(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => KaraokeListScreen()),
@@ -30,92 +75,103 @@ class LoginPage extends StatelessWidget {
   }
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: themeColors[2],
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: '뭐부',
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                    ),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  TextSpan(text: '르지'),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: '뭐부',
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(text: '르지'),
+                  ],
+                ),
+              ),
+              Transform.translate(
+                offset: Offset(-16, -75), // x축은 16, y축을 75으로 이동
+                child: Image.asset(
+                  'assets/images/mike.png', // <a href="https://www.flaticon.com/kr/free-icons/" title="노래방 아이콘">노래방 아이콘  제작자: Iconjam - Flaticon</a>
+                  width: 37,
+                  height: 37,
+                ),
+              ),
+              SizedBox(height: 50),
+              Container(
+                width: double.infinity, // 또는 특정 너비
+                child: _buildTextField(
+                  label: '이메일',
+                  obscureText: false,
+                  controller: _emailController,
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: double.infinity, // 또는 특정 너비
+                child: _buildTextField(
+                  label: '비밀번호',
+                  obscureText: true,
+                  controller: _passwordController,
+                ),
+              ),
+              SizedBox(height: 20),
+              Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      _buildLoginFunctionButton(
+                        name: "로그인",
+                        onPressed: () => _submitForm(context),
+                      ),
+                      _buildLoginFunctionButton(
+                        name: "회원 가입",
+                        onPressed: () => _navigateToJoin(context),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      _buildLoginFunctionButton(
+                        name: "아이디 찾기",
+                        onPressed: () => {},
+                      ),
+                      _buildLoginFunctionButton(
+                        name: "비밀번호 찾기",
+                        onPressed: () => {},
+                      ),
+                    ],
+                  ),
                 ],
               ),
-            ),
-            Transform.translate(
-              offset: Offset(-16, -75), // x축은 16, y축을 75으로 이동
-              child: Image.asset(
-                'assets/images/mike.png', // <a href="https://www.flaticon.com/kr/free-icons/" title="노래방 아이콘">노래방 아이콘  제작자: Iconjam - Flaticon</a>
-                width: 37,
-                height: 37,
-              ),
-            ),
-            SizedBox(height: 50),
-            Container(
-              width: double.infinity, // 또는 특정 너비
-              child: _buildTextField(
-                label: '이메일',
-                obscureText: false,
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              width: double.infinity, // 또는 특정 너비
-              child: _buildTextField(
-                label: '비밀번호',
-                obscureText: true,
-              ),
-            ),
-            SizedBox(height: 20),
-            Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    _buildLoginFunctionButton(
-                      name: "로그인",
-                      onPressed: () => _navigateToHome(context),
-                    ),
-                    _buildLoginFunctionButton(
-                      name: "회원 가입",
-                      onPressed: () => _navigateToJoin(context),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    _buildLoginFunctionButton(
-                      name: "아이디 찾기",
-                      onPressed: () => {},
-                    ),
-                    _buildLoginFunctionButton(
-                      name: "비밀번호 찾기",
-                      onPressed: () => {},
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
-        
       ),
     );
   }
@@ -141,8 +197,12 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField({required String label, required bool obscureText}) {
-    return TextField(
+  Widget _buildTextField(
+      {required String label,
+      required bool obscureText,
+      required TextEditingController? controller}) {
+    return TextFormField(
+      controller: controller,
       decoration: InputDecoration(
         filled: true,
         fillColor: themeColors[0],

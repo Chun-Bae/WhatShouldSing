@@ -31,8 +31,8 @@ class _JoinPageState extends State<JoinPage> {
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
                 email: _emailController.text,
                 password: _passwordController.text);
-        user = userCredential.user!;        
 
+        user = userCredential.user!;        
         if(user != null && !user!.emailVerified){
           await user!.sendEmailVerification();
         }
