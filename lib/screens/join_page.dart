@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/login_page.dart';
 import '../utils/colors.dart';
 
@@ -17,10 +18,19 @@ class _JoinPageState extends State<JoinPage> {
   bool _isEmailValid = true; // 이메일 유효성 상태
   bool _isChecking = false; // 중복확인 중인지 상태
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       // 모든 TextFormField의 검증이 성공했을 때 실행될 로직
       // 예: 로그인 요청, 데이터베이스 업데이트 등
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                email: _emailController.text,
+                password: _passwordController.text);
+        // 사용자 등록 성공 처리
+      } catch (e) {
+        // 에러 처리
+      }
     }
   }
 
@@ -32,7 +42,7 @@ class _JoinPageState extends State<JoinPage> {
     return regExp.hasMatch(email);
   }
 
-    Future<void> _checkEmail() async {
+  Future<void> _checkEmail() async {
     // 이메일 형식 검사
     if (!_validateEmailFormat(_emailController.text)) {
       setState(() {
@@ -131,7 +141,9 @@ class _JoinPageState extends State<JoinPage> {
                             onPrimary: Colors.white,
                             minimumSize: Size(110, 50), // 버튼의 고정 크기
                           ),
-                          child: _isChecking ? CircularProgressIndicator() : Text('중복확인'),
+                          child: _isChecking
+                              ? CircularProgressIndicator()
+                              : Text('중복확인'),
                         ),
                 ],
               ),
