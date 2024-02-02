@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
 import '../screens/main_page.dart';
+import '../screens/join_page.dart';
 import 'package:what_should_sing/utils/colors.dart';
 
 class LoginPage extends StatelessWidget {
   void _navigateToHome(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => KaraokeListScreen()),
+    );
+  }
+  void _navigateToJoin(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => JoinPage()),
+    );
+  }
+    void _navigateToFind_ID(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => KaraokeListScreen()),
+    );
+  }
+      void _navigateToFind_PW(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => KaraokeListScreen()),
@@ -74,7 +93,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     _buildLoginFunctionButton(
                       name: "회원 가입",
-                      onPressed: () => {},
+                      onPressed: () => _navigateToJoin(context),
                     ),
                   ],
                 ),
@@ -96,6 +115,7 @@ class LoginPage extends StatelessWidget {
             ),
           ],
         ),
+        
       ),
     );
   }
