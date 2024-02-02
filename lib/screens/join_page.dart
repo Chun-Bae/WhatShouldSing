@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/login_page.dart';
 import '../utils/colors.dart';
 
+final FirebaseAuth _auth =FirebaseAuth.instance;
+User? user;
+
 class JoinPage extends StatefulWidget {
   @override
   _JoinPageState createState() => _JoinPageState();
@@ -23,10 +26,17 @@ class _JoinPageState extends State<JoinPage> {
       // 모든 TextFormField의 검증이 성공했을 때 실행될 로직
       // 예: 로그인 요청, 데이터베이스 업데이트 등
       try {
+        
         UserCredential userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
                 email: _emailController.text,
                 password: _passwordController.text);
+        user = userCredential.user!;        
+
+        if(user != null && !user!.emailVerified){
+          await user!.sendEmailVerification();
+        }
+
         // 사용자 등록 성공 처리
       } catch (e) {
         // 에러 처리
