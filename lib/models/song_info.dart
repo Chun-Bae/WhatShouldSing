@@ -1,14 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 class SongInfo {
   String song;
   String artist;
-  String number;
+  String songNumber;
+  String? createdAt;
+  String? userId;
+
   bool isTJ;
   bool isKY;
 
   SongInfo(
       {required this.song,
       required this.artist,
-      required this.number,
+      required this.songNumber,
+      this.createdAt = ' ',
+      this.userId = ' ',
       this.isTJ = false,
       this.isKY = false});
 
@@ -17,7 +23,9 @@ class SongInfo {
     return {
       'song': song,
       'artist': artist,
-      'number': number,
+      'songNumber': songNumber,
+      'createdAt': createdAt,
+      'userId': userId,
       'isTJ': isTJ,
       'isKY': isKY,
     };
@@ -28,9 +36,30 @@ class SongInfo {
     return SongInfo(
       song: json['song'],
       artist: json['artist'],
-      number: json['number'],
+      songNumber: json['songNumber'],
+      userId: json['userId'],
+      createdAt: json['createdAt'],
       isTJ: json['isTJ'],
       isKY: json['isKY'],
+    );
+  }
+
+  // Firestore 문서로부터 SongInfo 객체를 생성하는 팩토리 생성자
+  factory SongInfo.fromFirestore(Map<String, dynamic> data) {
+    Timestamp timestamp = data['createdAt'] as Timestamp? ??
+        Timestamp.now(); // Timestamp를 가져오거나 현재 시간을 기본값으로 사용
+    String isoDate = timestamp
+        .toDate()
+        .toIso8601String(); // DateTime으로 변환 후 ISO 8601 문자열 형식으로 변환
+
+    return SongInfo(
+      song: data['song'] as String? ?? '',
+      artist: data['artist'] as String? ?? '',
+      songNumber: data['number'] as String? ?? '',
+      userId: data['userId'] as String? ?? '',
+      createdAt: isoDate,
+      isTJ: data['isTJ'] as bool? ?? false,
+      isKY: data['isKY'] as bool? ?? false,
     );
   }
 }

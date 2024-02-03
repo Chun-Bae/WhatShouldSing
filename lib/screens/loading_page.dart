@@ -5,9 +5,24 @@ import 'dart:convert';
 
 import '../utils/colors.dart';
 
-import '../screens/login_page.dart';
+import '../screens/main_page.dart';
 import '../models/song_info.dart';
 import '../providers/state_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final FirebaseFirestore db = FirebaseFirestore.instance;
+
+User? currentUser = FirebaseAuth.instance.currentUser;
+// 상위 컬렉션과 문서 ID를 지정
+final String parentCollectionPath = 'users';
+
+final String userId =
+    FirebaseAuth.instance.currentUser?.uid ?? ""; // 현재 사용자의 UID
+
+// 서브컬렉션과 새 문서를 추가, 'songs'라는 서브컬렉션에 노래 정보를 추가
+final CollectionReference subCollection =
+    db.collection(parentCollectionPath).doc(userId).collection('songs');
 
 class LoadingPage extends StatefulWidget {
   @override
@@ -22,21 +37,39 @@ class _LoadingPageState extends State<LoadingPage> {
     _navigateToLogin();
   }
 
+  Future<List<SongInfo>> fetchSongs() async {
+    List<SongInfo> songs = [];
+    try {
+      QuerySnapshot querySnapshot = await subCollection.get();
+
+      for (var doc in querySnapshot.docs) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        SongInfo songInfo = SongInfo.fromFirestore(data);
+        songs.add(songInfo);
+      }
+      print(songs);
+    } catch (e) {
+      print("fetch 예외: ");
+      print(e);
+    }
+    return songs;
+  }
+
   void _loadSongs() async {
-    List<SongInfo> loadedSongs = await loadSongs();
+    List<SongInfo> loadedSongs = await fetchSongs();
     Provider.of<SongsState>(context, listen: false).setSongsList(loadedSongs);
   }
 
   _navigateToLogin() async {
     await Future.delayed(Duration(seconds: 1), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(
-          builder: (context) => LoginPage(),
-          
-      )
-    );
+        context,
+        MaterialPageRoute(
+          builder: (context) => KaraokeListScreen(),
+        ));
   }
 
+  // shared_preferences용
   Future<List<SongInfo>> loadSongs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // 'songs' 키로 저장된 JSON 문자열 리스트를 로드

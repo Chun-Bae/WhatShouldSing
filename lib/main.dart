@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '../screens/loading_page.dart';
+import '../screens/login_page.dart';
 import '../providers/state_provider.dart';
 import '../providers/theme_provider.dart';
 
@@ -28,7 +28,7 @@ class WhatShouldSing extends StatelessWidget {
     return MaterialApp(
       title: '뭐부르지',
       debugShowCheckedModeBanner: false,
-      home: LoadingPage(),
+      home: LoginPage(),
     );
   }
 }

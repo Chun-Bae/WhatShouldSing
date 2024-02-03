@@ -6,7 +6,6 @@ import '../utils/colors.dart';
 import '../models/song_info.dart';
 import '../widgets/appbar/add_page_appbar.dart';
 import '../providers/state_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -40,7 +39,7 @@ Future<void> _firebaseAddSong(
       'userId': userId, // 현재 사용자의 UID 추가
       'song': song,
       'artist': artist,
-      'number': number,
+      'songNumber': number,
       'isTJ': isTJ,
       'isKY': isKY,
       'createdAt': FieldValue.serverTimestamp(), // Firestore 서버 시간을 기준으로 타임스탬프 생성
@@ -205,7 +204,7 @@ class _AddPageState extends State<AddPage> {
                     songsState.addSong(SongInfo(
                         song: songController.text,
                         artist: artistController.text,
-                        number: numberController.text,
+                        songNumber: numberController.text,
                         isTJ: isTJ,
                         isKY: isKY));
 

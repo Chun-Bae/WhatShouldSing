@@ -3,8 +3,10 @@ import '../screens/main_page.dart';
 import '../screens/join_page.dart';
 import 'package:what_should_sing/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../screens/loading_page.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+
 User? user;
 
 class LoginPage extends StatefulWidget {
@@ -30,26 +32,25 @@ class _LoginPageState extends State<LoginPage> {
             .signInWithEmailAndPassword(
                 email: _emailController.text,
                 password: _passwordController.text);
-        _navigateToHome(context);
+        _navigateToLoading(context);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           print('No user found for that email.');
         } else if (e.code == 'wrong-password') {
           print('Wrong password provided for that user.');
-        } else if(e.code == "too-many-requests"){ 
+        } else if (e.code == "too-many-requests") {
           print('요청 수가 최대 허용치를 초과합니다.');
-        }
-        else{
+        } else {
           print(e);
         }
       }
     }
   }
 
-  void _navigateToHome(BuildContext context) {
+  void _navigateToLoading(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => KaraokeListScreen()),
+      MaterialPageRoute(builder: (context) => LoadingPage()),
     );
   }
 

@@ -65,7 +65,7 @@ class _ListTileBody extends State<ListTileBody> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(songsList[index].artist),
-                Text(songsList[index].number),
+                Text(songsList[index].songNumber),
               ],
             ),
           ),
