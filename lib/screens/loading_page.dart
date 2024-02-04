@@ -47,13 +47,15 @@ class _LoadingPageState extends State<LoadingPage> {
         SongInfo songInfo = SongInfo.fromFirestore(data);
         songs.add(songInfo);
       }
-      print(songs);
+      print("노래를 가져왔습니다.");
     } catch (e) {
       print("fetch 예외: ");
       print(e);
     }
     return songs;
   }
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   void _loadSongs() async {
     List<SongInfo> loadedSongs = await fetchSongs();

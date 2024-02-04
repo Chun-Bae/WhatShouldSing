@@ -20,8 +20,8 @@ final String userId =
 final CollectionReference subCollection =
     db.collection(parentCollectionPath).doc(userId).collection('songs');
 
-Future<void> _firebaseAddSong(
-    String song, String artist, int number, bool isTJ, bool isKY) async {
+Future<String?> _firebaseAddSong(
+    String song, String artist, String songNumber, bool isTJ, bool isKY) async {
 // 보안 규칙 추가 필수
 // rules_version = '2';
 
@@ -35,19 +35,29 @@ Future<void> _firebaseAddSong(
 
   try {
     // Firestore에 사용자 ID를 포함한 노래 정보를 추가하는 문서 생성
-    await subCollection.add({
+    DocumentReference docRef = await subCollection.add({
       'userId': userId, // 현재 사용자의 UID 추가
       'song': song,
       'artist': artist,
-      'songNumber': number,
+      'songNumber': songNumber,
       'isTJ': isTJ,
       'isKY': isKY,
-      'createdAt': FieldValue.serverTimestamp(), // Firestore 서버 시간을 기준으로 타임스탬프 생성
+      'createdAt':
+          FieldValue.serverTimestamp(), // Firestore 서버 시간을 기준으로 타임스탬프 생성
     });
+    // 생성된 문서의 ID를 가져옴
+    String documentId = docRef.id;
+    // 동일한 문서에 documentId 필드를 추가하거나 업데이트
+    await docRef.update({
+      'documentId': documentId,
+    });
+
     print("노래 정보가 성공적으로 추가되었습니다.");
+    return documentId;
   } catch (e) {
     print("노래 정보 추가 중 오류 발생: $e");
   }
+  return null;
 }
 
 class AddPage extends StatefulWidget {
@@ -103,7 +113,6 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     final songsState = Provider.of<SongsState>(context);
-
     return Scaffold(
       appBar: AddPageAppBar(),
       body: Padding(
@@ -199,22 +208,23 @@ class _AddPageState extends State<AddPage> {
                 ),
                 child: Text('추가',
                     style: TextStyle(fontSize: 15, color: Colors.white)),
-                onPressed: () {
+                onPressed: ()  async {
                   if (!controllerIsEmpty()) {
-                    songsState.addSong(SongInfo(
-                        song: songController.text,
-                        artist: artistController.text,
-                        songNumber: numberController.text,
-                        isTJ: isTJ,
-                        isKY: isKY));
-
-                    _firebaseAddSong(
+                    String? documentId = await _firebaseAddSong(
                       songController.text,
                       artistController.text,
-                      int.parse(numberController.text),
+                      numberController.text,
                       isTJ,
                       isKY,
                     );
+                    songsState.addSong(SongInfo(
+                      song: songController.text,
+                      artist: artistController.text,
+                      songNumber: numberController.text,
+                      isTJ: isTJ,
+                      isKY: isKY,
+                      documentId: documentId as String?,
+                    ));
                     controllerClear();
                     Navigator.pop(context);
                   }
