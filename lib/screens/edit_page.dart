@@ -4,11 +4,55 @@ import '../models/song_info.dart';
 import '../utils/colors.dart';
 import '../providers/state_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final FirebaseFirestore db = FirebaseFirestore.instance;
+User? currentUser = FirebaseAuth.instance.currentUser;
+// 상위 컬렉션과 문서 ID를 지정
+final String parentCollectionPath = 'users';
+
+final String userId =
+    FirebaseAuth.instance.currentUser?.uid ?? ""; // 현재 사용자의 UID
+final CollectionReference subCollection =
+    db.collection(parentCollectionPath).doc(userId).collection('songs');
+
+Future<void> _firebaseUpdateSong(String? documentId, String song, String artist,
+    String songNumber, bool isTJ, bool isKY) async {
+// 보안 규칙 추가 필수
+// rules_version = '2';
+
+// service cloud.firestore {
+//   match /databases/{database}/documents {
+//     match /{document=**} {
+//       allow read, write: if request.auth != null;
+//     }
+//   }
+// }
+
+  try {
+    // Firestore에 노래 정보를 변경
+    DocumentReference docRef = subCollection.doc(documentId);
+
+    // 문서를 업데이트합니다.
+    await docRef.update({
+      'song': song,
+      'artist': artist,
+      'songNumber': songNumber,
+      'isTJ': isTJ,
+      'isKY': isKY,
+    });
+    print("노래 정보가 성공적으로 변경되었습니다.(firebase)");
+  } catch (e) {
+    print("노래 정보 변경 중 오류 발생: $e");
+  }
+}
 
 class EditPage extends StatefulWidget {
   final SongInfo songInfo; // final로 선언하여 변경 불가능하게 함
   final int index;
-  const EditPage({Key? key, required this.songInfo, required this.index}) : super(key: key);
+  const EditPage({Key? key, required this.songInfo, required this.index})
+      : super(key: key);
 
   @override
   State<EditPage> createState() => _EditPageState();
@@ -179,20 +223,23 @@ class _EditPageState extends State<EditPage> {
                     style: TextStyle(fontSize: 15, color: Colors.white)),
                 onPressed: () async {
                   if (!controllerIsEmpty()) {
-                    // String? documentId = await _firebaseAddSong(
-                    //   songController.text,
-                    //   artistController.text,
-                    //   numberController.text,
-                    //   isTJ,
-                    //   isKY,
-                    // );
-                    songsState.updateSong(SongInfo(
-                      song: songController.text,
-                      artist: artistController.text,
-                      songNumber: numberController.text,
-                      isTJ: isTJ,
-                      isKY: isKY,
-                    ),widget.index);
+                    await _firebaseUpdateSong(
+                      songsState.songsList[widget.index].documentId,
+                      songController.text,
+                      artistController.text,
+                      numberController.text,
+                      isTJ,
+                      isKY,
+                    );
+                    songsState.updateSong(
+                        SongInfo(
+                          song: songController.text,
+                          artist: artistController.text,
+                          songNumber: numberController.text,
+                          isTJ: isTJ,
+                          isKY: isKY,
+                        ),
+                        widget.index);
                     controllerClear();
                     print("노래 정보가 성공적으로 변경되었습니다.");
                     Navigator.pop(context);
