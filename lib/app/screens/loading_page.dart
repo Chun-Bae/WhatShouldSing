@@ -9,6 +9,7 @@ import 'list_page.dart';
 import '../../models/song_info.dart';
 import '../../providers/state_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../services/firestore_service.dart';
 
 
 class LoadingPage extends StatefulWidget {
@@ -24,23 +25,7 @@ class _LoadingPageState extends State<LoadingPage> {
     _navigateToLogin();
   }
 
-  Future<List<SongInfo>> fetchSongs() async {
-    List<SongInfo> songs = [];
-    try {
-      QuerySnapshot querySnapshot = await songsCollection.get();
 
-      for (var doc in querySnapshot.docs) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        SongInfo songInfo = SongInfo.fromFirestore(data);
-        songs.add(songInfo);
-      }
-      print("노래를 가져왔습니다.");
-    } catch (e) {
-      print("fetch 예외: ");
-      print(e);
-    }
-    return songs;
-  }
   void _loadSongs() async {
     List<SongInfo> loadedSongs = await fetchSongs();
     Provider.of<SongsState>(context, listen: false).setSongsList(loadedSongs);
