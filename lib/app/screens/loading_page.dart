@@ -12,7 +12,6 @@ import '../../models/song_info.dart';
 import '../../providers/state_provider.dart';
 import '../../services/firestore_service.dart';
 
-
 class LoadingPage extends StatefulWidget {
   @override
   _LoadingPageState createState() => _LoadingPageState();
@@ -25,7 +24,6 @@ class _LoadingPageState extends State<LoadingPage> {
     _loadSongs();
     _navigateToLogin();
   }
-
 
   void _loadSongs() async {
     List<SongInfo> loadedSongs = await fetchSongs();
@@ -40,17 +38,6 @@ class _LoadingPageState extends State<LoadingPage> {
           builder: (context) => ListPage(),
         ));
   }
-  // shared_preferences용
-  Future<List<SongInfo>> loadSongs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // 'songs' 키로 저장된 JSON 문자열 리스트를 로드
-    List<String>? jsonSongs = prefs.getStringList('songs');
-    // JSON 문자열 리스트를 SongInfo 객체 리스트로 변환
-    return jsonSongs
-            ?.map((jsonSong) => SongInfo.fromJson(json.decode(jsonSong)))
-            .toList() ??
-        [];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +48,7 @@ class _LoadingPageState extends State<LoadingPage> {
           alignment: Alignment.center,
           children: <Widget>[
             TitleWSS(),
-            MikeLogo(),
+            MikeLogo(x: -16, y: -30),
           ],
         ),
       ),

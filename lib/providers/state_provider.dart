@@ -30,13 +30,12 @@ class SongsState with ChangeNotifier {
 
   void addSong(SongInfo songInfo) async {
     songsList.add(songInfo);
-    await saveSongs(songsList);
     notifyListeners();
   }
 
   void updateSong(SongInfo songInfo, int index) async {
     songsList[index] = songInfo;
-    await saveSongs(songsList);
+
     notifyListeners();
   }
 
@@ -60,16 +59,8 @@ class SongsState with ChangeNotifier {
     // 로컬 목록에서 항목 삭제 및 상태 업데이트
     songsList.removeWhere((song) => itemsToRemove.contains(song));
     checked = List.generate(songsList.length, (index) => false);
-    await saveSongs(songsList); // 이 부분은 필요에 따라 Firestore 업데이트 로직으로 대체될 수 있음
     notifyListeners();
   }
 
-  Future<void> saveSongs(List<SongInfo> songs) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // SongInfo 객체 리스트를 JSON 문자열 리스트로 변환
-    List<String> jsonSongs =
-        songs.map((song) => json.encode(song.toJson())).toList();
-    // JSON 문자열 리스트를 'songs' 키로 저장
-    await prefs.setStringList('songs', jsonSongs);
-  }
+
 }
