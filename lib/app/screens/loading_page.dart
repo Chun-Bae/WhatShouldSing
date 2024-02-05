@@ -4,25 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '../utils/colors.dart';
-
+import '../../services/auth_service.dart';
 import 'list_page.dart';
 import '../../models/song_info.dart';
 import '../../providers/state_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-final FirebaseFirestore db = FirebaseFirestore.instance;
-
-User? currentUser = FirebaseAuth.instance.currentUser;
-// 상위 컬렉션과 문서 ID를 지정
-final String parentCollectionPath = 'users';
-
-final String userId =
-    FirebaseAuth.instance.currentUser?.uid ?? ""; // 현재 사용자의 UID
-
-// 서브컬렉션과 새 문서를 추가, 'songs'라는 서브컬렉션에 노래 정보를 추가
-final CollectionReference subCollection =
-    db.collection(parentCollectionPath).doc(userId).collection('songs');
 
 class LoadingPage extends StatefulWidget {
   @override
@@ -40,7 +27,7 @@ class _LoadingPageState extends State<LoadingPage> {
   Future<List<SongInfo>> fetchSongs() async {
     List<SongInfo> songs = [];
     try {
-      QuerySnapshot querySnapshot = await subCollection.get();
+      QuerySnapshot querySnapshot = await songsCollection.get();
 
       for (var doc in querySnapshot.docs) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -54,9 +41,6 @@ class _LoadingPageState extends State<LoadingPage> {
     }
     return songs;
   }
-
-  FirebaseFirestore db = FirebaseFirestore.instance;
-
   void _loadSongs() async {
     List<SongInfo> loadedSongs = await fetchSongs();
     Provider.of<SongsState>(context, listen: false).setSongsList(loadedSongs);
@@ -70,7 +54,6 @@ class _LoadingPageState extends State<LoadingPage> {
           builder: (context) => ListPage(),
         ));
   }
-
   // shared_preferences용
   Future<List<SongInfo>> loadSongs() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
