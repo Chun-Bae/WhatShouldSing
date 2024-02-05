@@ -1,8 +1,8 @@
 //package
 import 'package:cloud_firestore/cloud_firestore.dart';
 //lib
-import '../models/song_info.dart';
 import 'auth_service.dart';
+import '../models/song_info.dart';
 
 Future<List<SongInfo>> fetchSongs() async {
   List<SongInfo> songs = [];

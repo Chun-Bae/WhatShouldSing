@@ -1,14 +1,15 @@
+//package
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-
-import '../utils/colors.dart';
-import '../../services/auth_service.dart';
+//lib
 import 'list_page.dart';
+import '../utils/colors.dart';
+import '../widgets/textfield/title_wss.dart';
+import '../widgets/logo/mike_logo.dart';
 import '../../models/song_info.dart';
 import '../../providers/state_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../services/firestore_service.dart';
 
 
@@ -59,33 +60,8 @@ class _LoadingPageState extends State<LoadingPage> {
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
-            RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: '뭐부',
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(text: '르지'),
-                ],
-              ),
-            ),
-            Transform.translate(
-              offset: Offset(-16, -30), // x축은 0, y축을 -10으로 이동
-              child: Image.asset(
-                'assets/images/mike.png', // <a href="https://www.flaticon.com/kr/free-icons/" title="노래방 아이콘">노래방 아이콘  제작자: Iconjam - Flaticon</a>
-                width: 37,
-                height: 37,
-              ),
-            )
+            TitleWSS(),
+            MikeLogo(),
           ],
         ),
       ),
