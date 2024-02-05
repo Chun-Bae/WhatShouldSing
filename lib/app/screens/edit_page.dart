@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../widgets/appbar/edit_page_appbar.dart';
-import '../models/song_info.dart';
+import '../../models/song_info.dart';
 import '../utils/colors.dart';
-import '../providers/state_provider.dart';
+import '../../providers/state_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

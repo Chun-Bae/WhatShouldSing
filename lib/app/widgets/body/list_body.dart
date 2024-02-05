@@ -3,7 +3,7 @@ import 'package:what_should_sing/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 import '../../screens/edit_page.dart';
 import '../../utils/colors.dart';
-import '../../providers/state_provider.dart';
+import '../../../providers/state_provider.dart';
 
 class ListTileBody extends StatefulWidget {
   @override

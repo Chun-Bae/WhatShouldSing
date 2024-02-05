@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/colors.dart';
-import '../../providers/state_provider.dart';
+import '../../../providers/state_provider.dart';
 import '../../screens/add_page.dart';
 
 class MainAddButton extends StatefulWidget {

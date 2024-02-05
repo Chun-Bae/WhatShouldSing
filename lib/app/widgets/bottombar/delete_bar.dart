@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:what_should_sing/providers/theme_provider.dart';
 import '../../utils/colors.dart';
-import '../../providers/state_provider.dart';
+import '../../../providers/state_provider.dart';
 import 'package:provider/provider.dart';
 
 class DeleteBar extends StatelessWidget {

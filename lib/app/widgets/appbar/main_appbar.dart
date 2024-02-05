@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../utils/colors.dart';
 import 'package:provider/provider.dart';
-import '../../providers/state_provider.dart';
-import '../../providers/theme_provider.dart';
+import '../../../providers/state_provider.dart';
+import '../../../providers/theme_provider.dart';
 
 class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   MainAppbar({Key? key}) : super(key: key);

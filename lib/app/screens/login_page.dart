@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../screens/main_page.dart';
+import 'list_page.dart';
 import '../screens/join_page.dart';
-import 'package:what_should_sing/utils/colors.dart';
+import 'package:what_should_sing/app/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/loading_page.dart';
 
@@ -64,14 +64,14 @@ class _LoginPageState extends State<LoginPage> {
   void _navigateToFind_ID(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => KaraokeListScreen()),
+      MaterialPageRoute(builder: (context) => ListPage()),
     );
   }
 
   void _navigateToFind_PW(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => KaraokeListScreen()),
+      MaterialPageRoute(builder: (context) => ListPage()),
     );
   }
 

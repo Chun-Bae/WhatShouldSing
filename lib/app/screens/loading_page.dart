@@ -5,9 +5,9 @@ import 'dart:convert';
 
 import '../utils/colors.dart';
 
-import '../screens/main_page.dart';
-import '../models/song_info.dart';
-import '../providers/state_provider.dart';
+import 'list_page.dart';
+import '../../models/song_info.dart';
+import '../../providers/state_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -67,7 +67,7 @@ class _LoadingPageState extends State<LoadingPage> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => KaraokeListScreen(),
+          builder: (context) => ListPage(),
         ));
   }
 
