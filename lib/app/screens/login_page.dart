@@ -1,12 +1,14 @@
+//package
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+//lib
 import 'list_page.dart';
 import '../screens/join_page.dart';
-import 'package:what_should_sing/app/utils/colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/loading_page.dart';
+import '../utils/colors.dart';
+
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-
 User? user;
 
 class LoginPage extends StatefulWidget {
