@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../utils/colors.dart';
 
-
-class AddPageAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const AddPageAppBar({super.key});
+class EditPageAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const EditPageAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

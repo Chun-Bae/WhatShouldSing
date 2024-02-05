@@ -18,7 +18,6 @@ final String userId =
 final CollectionReference subCollection =
     db.collection(parentCollectionPath).doc(userId).collection('songs');
 
-
 class SongsState with ChangeNotifier {
   List<SongInfo> songsList = [];
   List<bool> checked = [];
@@ -31,6 +30,12 @@ class SongsState with ChangeNotifier {
 
   void addSong(SongInfo songInfo) async {
     songsList.add(songInfo);
+    await saveSongs(songsList);
+    notifyListeners();
+  }
+
+  void updateSong(SongInfo songInfo, int index) async {
+    songsList[index] = songInfo;
     await saveSongs(songsList);
     notifyListeners();
   }
@@ -49,7 +54,7 @@ class SongsState with ChangeNotifier {
         await subCollection.doc(song.documentId).delete();
         print("Document with ID: ${song.documentId} deleted");
       }
-        print("Document with ID: ${song.documentId}");
+      print("Document with ID: ${song.documentId}");
     }
 
     // 로컬 목록에서 항목 삭제 및 상태 업데이트

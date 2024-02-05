@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:what_should_sing/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
-
+import '../../screens/edit_page.dart';
 import '../../utils/colors.dart';
 import '../../providers/state_provider.dart';
 
@@ -19,6 +19,7 @@ class _ListTileBody extends State<ListTileBody> {
     return ListView.builder(
       itemCount: songsList.length,
       itemBuilder: (context, index) {
+        final songInfo = songsList[index];
         return Container(
           margin: EdgeInsets.all(8.0),
           decoration: BoxDecoration(
@@ -34,6 +35,16 @@ class _ListTileBody extends State<ListTileBody> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: ListTile(
+            onTap: () {
+              // 수정 페이지로 이동하면서 songInfo 객체 전달
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      EditPage(songInfo: songInfo, index: index),
+                ),
+              );
+            },
             leading: isSelectionMode
                 ? Transform.scale(
                     scale: 1.2,
