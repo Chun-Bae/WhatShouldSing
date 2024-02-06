@@ -1,15 +1,14 @@
 //package
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 //lib
 import 'list_page.dart';
 import '../screens/join_page.dart';
 import '../screens/loading_page.dart';
 import '../utils/colors.dart';
-
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
-User? user;
+import '../../services/auth_service.dart';
+import '../widgets/textfield/title_wss.dart';
+import '../widgets/logo/mike_logo.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,23 +28,10 @@ class _LoginPageState extends State<LoginPage> {
       // 모든 TextFormField의 검증이 성공했을 때 실행될 로직
       // 예: 로그인 요청, 데이터베이스 업데이트 등
 
-      try {
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: _emailController.text,
-                password: _passwordController.text);
-        _navigateToLoading(context);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
-        } else if (e.code == "too-many-requests") {
-          print('요청 수가 최대 허용치를 초과합니다.');
-        } else {
-          print(e);
-        }
-      }
+      signInWithEmailAndPassword(
+          email: _emailController.text,
+          pw: _passwordController.text,
+          navigateToLoading: () => _navigateToLoading(context));
     }
   }
 
@@ -95,33 +81,8 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: '뭐부',
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(text: '르지'),
-                  ],
-                ),
-              ),
-              Transform.translate(
-                offset: Offset(-16, -75), // x축은 16, y축을 75으로 이동
-                child: Image.asset(
-                  'assets/images/mike.png', // <a href="https://www.flaticon.com/kr/free-icons/" title="노래방 아이콘">노래방 아이콘  제작자: Iconjam - Flaticon</a>
-                  width: 37,
-                  height: 37,
-                ),
-              ),
+              TitleWSS(),
+              MikeLogo(x: -16, y: -75),
               SizedBox(height: 50),
               Container(
                 width: double.infinity, // 또는 특정 너비
