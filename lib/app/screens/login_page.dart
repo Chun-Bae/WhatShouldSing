@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 
 //lib
 import 'list_page.dart';
+import '../utils/colors.dart';
 import '../screens/join_page.dart';
 import '../screens/loading_page.dart';
-import '../utils/colors.dart';
-import '../../services/auth_service.dart';
 import '../widgets/textfield/title_wss.dart';
+import '../widgets/textfield/login_page_textfield.dart';
 import '../widgets/logo/mike_logo.dart';
+import '../widgets/button/login_page_button.dart';
+import '../../services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,10 +26,8 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   Future<void> _submitForm(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      // 모든 TextFormField의 검증이 성공했을 때 실행될 로직
-      // 예: 로그인 요청, 데이터베이스 업데이트 등
-
+    if (_formKey.currentState!.validate()) {     
+      // 로그인 요청
       signInWithEmailAndPassword(
           email: _emailController.text,
           pw: _passwordController.text,
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 50),
               Container(
                 width: double.infinity, // 또는 특정 너비
-                child: _buildTextField(
+                child: LoginPageTextfield(
                   label: '이메일',
                   obscureText: false,
                   controller: _emailController,
@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 20),
               Container(
                 width: double.infinity, // 또는 특정 너비
-                child: _buildTextField(
+                child: LoginPageTextfield(
                   label: '비밀번호',
                   obscureText: true,
                   controller: _passwordController,
@@ -107,11 +107,11 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      _buildLoginFunctionButton(
+                      LoginPageButton(
                         name: "로그인",
                         onPressed: () => _submitForm(context),
                       ),
-                      _buildLoginFunctionButton(
+                      LoginPageButton(
                         name: "회원 가입",
                         onPressed: () => _navigateToJoin(context),
                       ),
@@ -121,11 +121,11 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      _buildLoginFunctionButton(
+                      LoginPageButton(
                         name: "아이디 찾기",
                         onPressed: () => {},
                       ),
-                      _buildLoginFunctionButton(
+                      LoginPageButton(
                         name: "비밀번호 찾기",
                         onPressed: () => {},
                       ),
@@ -137,61 +137,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildLoginFunctionButton(
-      {required String name, VoidCallback? onPressed}) {
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.only(right: 4),
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3),
-            ),
-            primary: themeColors[3],
-            onPrimary: Colors.white,
-            minimumSize: Size(double.infinity, 45), // 여기서 50은 버튼의 높이
-          ),
-          child: Text(name),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-      {required String label,
-      required bool obscureText,
-      required TextEditingController? controller}) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: themeColors[0],
-        hintText: label,
-        hintStyle: TextStyle(color: Colors.black), // 라벨 텍스트 색상을 흰색으로 설정
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
-            color: Colors.white,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
-            color: themeColors[1], // 활성화되었지만 포커스가 없을 때의 테두리 색상
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
-            color: themeColors[1],
-          ),
-        ),
-      ),
-      obscureText: obscureText, // ***표시
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:what_should_sing/app/widgets/button/main_add_button.dart';
+import 'package:what_should_sing/app/widgets/button/list_add_button.dart';
 
 import '../../providers/state_provider.dart';
 import '../../providers/theme_provider.dart';
