@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 Future<void> signInWithEmailAndPassword(
-    {required String email, required String pw, VoidCallback? navigateToLoading}) async {
+    {required String email,
+    required String pw,
+    VoidCallback? navigateToLoading}) async {
   try {
-    final credential =
-        await _auth.signInWithEmailAndPassword(email: email, password: pw);
-        navigateToLoading!();
+    await _auth.signInWithEmailAndPassword(email: email, password: pw);
+    navigateToLoading!();
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
       print('No user found for that email.');
