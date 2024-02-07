@@ -1,8 +1,12 @@
+//package
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+//lib
 import '../screens/login_page.dart';
 import '../utils/colors.dart';
-
+import '../utils/validator.dart';
+import '../widgets/textfield/join_page_textfield.dart';
+import '../widgets/button/join_page_button.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 User? user;
@@ -19,11 +23,12 @@ class _JoinPageState extends State<JoinPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   String? _emailError; // 이메일 에러 메시지
+  String? _confirmPasswordError;
   bool _isEmailValid = true; // 이메일 유효성 상태
   bool _isChecking = false; // 중복확인 중인지 상태
 
   Future<void> _submitForm() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && _confirmPasswordError == null) {
       // 모든 TextFormField의 검증이 성공했을 때 실행될 로직
       // 예: 로그인 요청, 데이터베이스 업데이트 등
       try {
@@ -37,23 +42,18 @@ class _JoinPageState extends State<JoinPage> {
           await user!.sendEmailVerification();
         }
       } catch (e) {
-        // 에러 처리
-        print(e);
+        
+        print("회원가입 양식 제출 에러: $e");
       }
     }
-  }
-
-  // 이메일 형식 검사 함수
-  bool _validateEmailFormat(String email) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regExp = new RegExp(pattern);
-    return regExp.hasMatch(email);
+    else{
+      print("회원가입 양식이 틀렸습니다.");
+    }
   }
 
   Future<void> _checkEmail() async {
     // 이메일 형식 검사
-    if (!_validateEmailFormat(_emailController.text)) {
+    if (!validateEmailFormat(_emailController.text)) {
       setState(() {
         _emailError = '유효하지 않은 이메일 형식입니다.';
       });
@@ -75,36 +75,11 @@ class _JoinPageState extends State<JoinPage> {
     });
   }
 
-  String? _validateEmail(String? value) {
-    final emailPattern = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    if (value == null || value.isEmpty || !emailPattern.hasMatch(value)) {
-      return '알맞은 형식의 이메일 주소를 입력해주세요.';
-    }
-    return null; // null을 반환하면 에러가 없음을 의미합니다.
-  }
-
   void _navigateToLogin(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return '비밀번호를 입력해주세요.';
-    } else if (value.length < 8 && value.length < 16) {
-      return '비밀번호는 8자 이상 15자 이내 이어야 합니다.';
-    }
-    // 여기에 추가적인 유효성 검사 로직을 구현할 수 있습니다.
-    return null;
-  }
-
-  String? _validateConfirmPassword(String? value) {
-    if (_passwordController.text != value) {
-      return '비밀번호가 일치하지 않습니다.';
-    }
-    return null;
   }
 
   @override
@@ -129,11 +104,11 @@ class _JoinPageState extends State<JoinPage> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: _buildTextField(
+                    child: JoinPageTextfield(
                       label: '이메일 입력',
                       obscureText: false,
                       controller: _emailController,
-                      validator: _validateEmail,
+                      validator: validateEmail,
                       errorText: _emailError,
                     ),
                   ),
@@ -159,7 +134,7 @@ class _JoinPageState extends State<JoinPage> {
               SizedBox(height: 20),
               Container(
                 width: double.infinity, // 또는 특정 너비
-                child: _buildTextField(
+                child: JoinPageTextfield(
                   label: '닉네임 입력',
                   obscureText: false,
                 ),
@@ -167,32 +142,43 @@ class _JoinPageState extends State<JoinPage> {
               SizedBox(height: 20),
               Container(
                 width: double.infinity, // 또는 특정 너비
-                child: _buildTextField(
+                child: JoinPageTextfield(
                   label: '비밀번호 입력',
                   obscureText: true,
                   controller: _passwordController,
-                  validator: _validatePassword,
+                  validator: validateLengthPassword,
                 ),
               ),
               SizedBox(height: 20),
               Container(
                 width: double.infinity, // 또는 특정 너비
-                child: _buildTextField(
+                child: JoinPageTextfield(
                   label: '비밀번호 재확인',
                   obscureText: true,
                   controller: _confirmPasswordController,
-                  validator: _validateConfirmPassword,
+                  errorText: _confirmPasswordError,
+                  onChanged: (text) {
+                    if (text != _passwordController.text) {
+                      setState(() {
+                        _confirmPasswordError = '비밀번호가 일치하지 않습니다.';
+                      });
+                    } else {
+                      setState(() {
+                        _confirmPasswordError = null;
+                      });
+                    }
+                  },
                 ),
               ),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _buildLoginFunctionButton(
+                  JoinPageButton(
                     name: "가입하기",
                     onPressed: () => _submitForm(),
                   ),
-                  _buildLoginFunctionButton(
+                  JoinPageButton(
                     name: "가입취소",
                     onPressed: () => _navigateToLogin(context),
                   ),
@@ -202,69 +188,6 @@ class _JoinPageState extends State<JoinPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildLoginFunctionButton(
-      {required String name, VoidCallback? onPressed}) {
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.only(right: 4),
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3),
-            ),
-            primary: themeColors[3],
-            onPrimary: Colors.white,
-            minimumSize: Size(double.infinity, 45), // 여기서 50은 버튼의 높이
-          ),
-          child: Text(name),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required String label,
-    required bool obscureText,
-    TextEditingController? controller,
-    String? Function(String?)? validator,
-    String? errorText,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: themeColors[0],
-        hintText: label,
-        hintStyle: TextStyle(
-            color: const Color.fromARGB(255, 70, 70, 70)), // 라벨 텍스트 색상을 흰색으로 설정
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
-            color: Colors.white,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
-            color: themeColors[1], // 활성화되었지만 포커스가 없을 때의 테두리 색상
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
-            color: themeColors[1],
-          ),
-        ),
-
-        //// Email 전용
-        errorText: errorText,
-      ),
-      obscureText: obscureText, // ***표시
-      validator: validator,
     );
   }
 }
