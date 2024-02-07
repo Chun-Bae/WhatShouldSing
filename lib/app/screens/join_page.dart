@@ -7,9 +7,7 @@ import '../utils/colors.dart';
 import '../utils/validator.dart';
 import '../widgets/textfield/join_page_textfield.dart';
 import '../widgets/button/join_page_button.dart';
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
-User? user;
+import '../../services/auth_service.dart';
 
 class JoinPage extends StatefulWidget {
   @override
