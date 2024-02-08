@@ -9,6 +9,7 @@ import '../widgets/textfield/join_page_textfield.dart';
 import '../widgets/button/join_page_button.dart';
 import '../../services/auth_service.dart';
 
+
 class JoinPage extends StatefulWidget {
   @override
   _JoinPageState createState() => _JoinPageState();
