@@ -11,11 +11,15 @@ import '../providers/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NaverMapSdk.instance.initialize(
-      clientId: 'x843dugd4b',
-      onAuthFailed: (ex) {
-        print("********* 네이버맵 인증오류 : $ex *********");
-      });
+  try {
+    await NaverMapSdk.instance.initialize(
+        clientId: 'x843dugd4b',
+        onAuthFailed: (error) {
+          print('Auth failed: $error');
+        });
+  } catch (e) {
+    print("********* 네이버맵 인증오류 : $e *********");
+  }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
