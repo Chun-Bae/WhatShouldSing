@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
   void _navigateToFind_ID(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => NaverMapApp()),
+      MaterialPageRoute(builder: (context) => NaverMapPage()),
     );
   }
 
