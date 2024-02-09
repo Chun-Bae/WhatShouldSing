@@ -9,6 +9,7 @@ import '../widgets/appbar/main_appbar.dart';
 import '../widgets/body/empty_body.dart';
 import '../widgets/body/list_body.dart';
 import '../widgets/bottombar/delete_bar.dart';
+import '../widgets/navigation/main_bar_drawer.dart';
 
 class ListPage extends StatefulWidget {
   @override
@@ -25,6 +26,7 @@ class _ListPageState extends State<ListPage> {
       backgroundColor: Colors.white,
       //AppBar
       appBar: MainAppbar(),
+      drawer: MainAppDrawer(),
       //Body
       body: songsList.isEmpty ? EmptyBody() : ListTileBody(),
       //BottomBar
