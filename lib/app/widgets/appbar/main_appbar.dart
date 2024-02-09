@@ -5,7 +5,9 @@ import '../../../providers/state_provider.dart';
 import '../../../providers/theme_provider.dart';
 
 class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
-  MainAppbar({Key? key}) : super(key: key);
+  final PreferredSizeWidget? bottom;
+  MainAppbar({Key? key, required this.bottom}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final uiState = Provider.of<UIState>(context);
@@ -18,6 +20,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
         child: AppBar(
           centerTitle: true,
           backgroundColor: themeColors[2],
+          bottom: bottom,
           title: RichText(
             text: TextSpan(
               children: <TextSpan>[
@@ -72,5 +75,5 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(50.0);
+  Size get preferredSize => Size.fromHeight(100.0);
 }

@@ -4,7 +4,7 @@ import 'package:what_should_sing/app/widgets/button/list_add_button.dart';
 
 import '../../providers/state_provider.dart';
 import '../../providers/theme_provider.dart';
-
+import '../widgets/textfield/search_textfield.dart';
 import '../widgets/appbar/main_appbar.dart';
 import '../widgets/body/empty_body.dart';
 import '../widgets/body/list_body.dart';
@@ -26,7 +26,7 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       //AppBar
-      appBar: MainAppbar(),
+      appBar: MainAppbar(bottom: SearchTextfield(),),
       drawer: MainAppDrawer(),
       //Body
       body: songsList.isEmpty ? EmptyBody() : ListTileBody(),
