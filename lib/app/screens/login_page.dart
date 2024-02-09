@@ -10,7 +10,6 @@ import '../widgets/textfield/title_wss.dart';
 import '../widgets/textfield/login_page_textfield.dart';
 import '../widgets/logo/mike_logo.dart';
 import '../widgets/button/login_page_button.dart';
-import '../widgets/views/naver_map_widget.dart';
 import '../../services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -53,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
   void _navigateToFind_ID(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => NaverMapPage()),
+      MaterialPageRoute(builder: (context) => LoadingPage()),
     );
   }
 
@@ -124,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: <Widget>[
                       LoginPageButton(
                         name: "아이디 찾기",
-                        onPressed: () => _navigateToFind_ID(context),
+                        onPressed: () => {},
                       ),
                       LoginPageButton(
                         name: "비밀번호 찾기",
