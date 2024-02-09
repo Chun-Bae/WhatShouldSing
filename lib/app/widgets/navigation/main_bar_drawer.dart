@@ -9,16 +9,17 @@ class MainAppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero, // ListView의 기본 패딩을 제거합니다.
+        padding: EdgeInsets.zero, // ListView의 기본 패딩을 제거
         children: <Widget>[
           UserAccountsDrawerHeader(
-            // UserAccountsDrawerHeader를 사용하여 더 풍부한 UI를 제공합니다.
-            accountName: Text('$nickname님, 좋은하루 되세요!'),
-            accountEmail: Text(email), // 이메일 정보가 없으므로 null로 설정합니다.
+            // UserAccountsDrawerHeader를 사용하여 더 풍부한 UI를 제공
+            accountName: Text('$nickname님'),
+            accountEmail: Text(email),
+            // 후에 프로필 사진 등록 기능 추가
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: Text(
-                nickname[0].toUpperCase(), // 닉네임의 첫 글자를 사용합니다.
+                nickname[0].toUpperCase(),
                 style: TextStyle(fontSize: 40.0, color: themeColors[3]),
               ),
             ),

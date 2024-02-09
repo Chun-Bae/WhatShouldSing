@@ -9,6 +9,7 @@ import '../widgets/appbar/main_appbar.dart';
 import '../widgets/body/empty_body.dart';
 import '../widgets/body/list_body.dart';
 import '../widgets/bottombar/delete_bar.dart';
+import '../widgets/bottombar/list_tap_bar.dart';
 import '../widgets/navigation/main_bar_drawer.dart';
 
 class ListPage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _ListPageState extends State<ListPage> {
       //Body
       body: songsList.isEmpty ? EmptyBody() : ListTileBody(),
       //BottomBar
-      bottomNavigationBar: isSelectionMode ? DeleteBar() : null,
+      bottomNavigationBar: isSelectionMode ? DeleteBar() : ListTapBar(),
       //AddButton
       floatingActionButton: isSelectionMode ? null : MainAddButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
