@@ -1,12 +1,27 @@
+//package
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+//lib
 import '../../utils/colors.dart';
+import '../../screens/login_page.dart';
+import '../../../providers/state_provider.dart';
 
 class MainAppDrawer extends StatelessWidget {
   const MainAppDrawer({super.key});
   final String nickname = "bull";
   final String email = "dbtjrdla2056@naver.com";
+
+  void _navigateToLogin(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final songsState = Provider.of<SongsState>(context);
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero, // ListView의 기본 패딩을 제거
@@ -52,7 +67,9 @@ class MainAppDrawer extends StatelessWidget {
             leading: Icon(Icons.exit_to_app, color: themeColors[1]),
             title: Text('로그아웃'),
             onTap: () {
-              // 탭 이벤트 처리
+              songsState.initializationSong();
+              print("로그아웃되었습니다.");              
+              _navigateToLogin(context);
             },
           ),
         ],

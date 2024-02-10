@@ -7,7 +7,7 @@ import 'firebase_options.dart';
 import 'app/screens/login_page.dart';
 import '../providers/state_provider.dart';
 import '../providers/theme_provider.dart';
-import 'app/screens/list_page.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -30,7 +30,7 @@ class WhatShouldSing extends StatelessWidget {
     return MaterialApp(
       title: '뭐부르지',
       debugShowCheckedModeBanner: false,
-      home: ListPage(),
+      home: LoginPage(),
     );
   }
 }

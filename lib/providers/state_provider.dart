@@ -46,4 +46,9 @@ class SongsState with ChangeNotifier {
     checked = List.generate(songsList.length, (index) => false);
     notifyListeners();
   }
+
+  void initializationSong() async {
+    songsList = [];
+    notifyListeners();
+  }
 }
