@@ -22,6 +22,7 @@ class _ListTapBarState extends State<ListTapBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.view_list),
@@ -31,6 +32,14 @@ class _ListTapBarState extends State<ListTapBar> {
           icon: Icon(Icons.favorite_outline),
           activeIcon: Icon(Icons.favorite, color: themeColors[3]),
           label: '관심목록',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search_rounded),
+          label: '노래 번호 검색',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.map_rounded),
+          label: '근처 노래방',
         ),
       ],
       currentIndex: _selectedIndex, // active tab index
