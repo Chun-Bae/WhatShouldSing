@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //lib
-import 'list_page.dart';
+import 'main_page.dart';
 import '../utils/colors.dart';
 import '../widgets/textfield/title_wss.dart';
 import '../widgets/logo/mike_logo.dart';
@@ -33,7 +33,7 @@ class _LoadingPageState extends State<LoadingPage> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ListPage(),
+          builder: (context) => MainPage(),
         ));
   }
 
