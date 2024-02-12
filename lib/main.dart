@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 //lib
 import 'firebase_options.dart';
 import 'app/screens/login_page.dart';
-import 'app/screens/list_page.dart';
+import 'app/screens/main_page.dart';
 import '../providers/state_provider.dart';
 import '../providers/theme_provider.dart';
 import '../providers/search_provider.dart';

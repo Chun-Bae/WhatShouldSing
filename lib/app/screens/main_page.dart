@@ -26,15 +26,17 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       //AppBar
-      appBar: MainAppbar(bottom: SearchTextfield(),),
+      appBar: MainAppbar(
+        bottom: SearchTextfield(),
+      ),
       drawer: MainAppDrawer(),
       //Body
       body: songsList.isEmpty ? EmptyBody() : ListTileBody(),
-      //BottomBar
-      bottomNavigationBar: isSelectionMode ? DeleteBar() : ListTapBar(),
       //AddButton
       floatingActionButton: isSelectionMode ? null : MainAddButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      //BottomBar
+      bottomNavigationBar: isSelectionMode ? DeleteBar() : ListTapBar(),
     );
   }
 }

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //lib
-import 'list_page.dart';
+import 'main_page.dart';
 import '../utils/colors.dart';
 import '../screens/join_page.dart';
 import '../screens/loading_page.dart';
