@@ -33,7 +33,7 @@ class WhatShouldSing extends StatelessWidget {
     return MaterialApp(
       title: '뭐부르지',
       debugShowCheckedModeBanner: false,
-      home: ListPage(),
+      home: LoginPage(),
     );
   }
 }

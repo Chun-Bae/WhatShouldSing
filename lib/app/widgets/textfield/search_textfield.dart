@@ -42,9 +42,7 @@ class _SearchTextfieldState extends State<SearchTextfield> {
                       255, 228, 228, 228), // Fill color for the TextField
                 ),
                 onChanged: (text){
-                  print("text: $text");
                   searchText.setSearchText(text);
-                  print("provider: ${searchText.searchText}");
                 },
               ),
             ),
