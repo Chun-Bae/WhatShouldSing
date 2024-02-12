@@ -4,12 +4,9 @@ import 'package:provider/provider.dart';
 //lib
 import '../../providers/state_provider.dart';
 import '../../providers/theme_provider.dart';
-import '../widgets/textfield/search_textfield.dart';
-import '../widgets/appbar/main_appbar.dart';
 import '../widgets/body/empty_body.dart';
 import '../widgets/body/list_body.dart';
 import '../widgets/button/list_add_button.dart';
-import '../widgets/navigation/main_bar_drawer.dart';
 
 class ListPage extends StatefulWidget {
   @override
@@ -24,11 +21,6 @@ class _ListPageState extends State<ListPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      //AppBar
-      appBar: MainAppbar(
-        bottom: SearchTextfield(),
-      ),
-      drawer: MainAppDrawer(),
       //Body
       body: songsList.isEmpty ? EmptyBody() : ListTileBody(),
       //AddButton

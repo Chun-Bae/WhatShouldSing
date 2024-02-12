@@ -41,6 +41,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           actions: [
+            if(this.bottom != null)
             (!uiState.isSelectionMode)
                 ? PopupMenuButton<String>(
                     offset: Offset(0, 30),
@@ -75,5 +76,5 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(110.0);
+  Size get preferredSize => this.bottom == null ? Size.fromHeight(50.0) : Size.fromHeight(110.0);
 }
