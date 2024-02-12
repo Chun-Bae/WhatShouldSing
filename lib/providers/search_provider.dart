@@ -8,4 +8,9 @@ class SearchState with ChangeNotifier {
     this.searchText = searchText;
     notifyListeners();
   }
+
+  void clear() {
+    this.searchText = "";
+    notifyListeners();
+  }
 }

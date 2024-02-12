@@ -13,6 +13,13 @@ class SearchTextfield extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _SearchTextfieldState extends State<SearchTextfield> {
+  final TextEditingController searchTextController = TextEditingController();
+  @override
+  void dispose() {
+    searchTextController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchText = Provider.of<SearchState>(context);
@@ -28,9 +35,18 @@ class _SearchTextfieldState extends State<SearchTextfield> {
             Expanded(
               child: TextField(
                 textAlignVertical: TextAlignVertical.bottom,
+                controller: searchTextController,
                 decoration: InputDecoration(
                   hintText: '노래 검색...',
                   prefixIcon: Icon(Icons.search),
+                  suffixIcon: GestureDetector(
+                    child: const Icon(
+                      Icons.cancel,
+                    ),
+                    onTap: () =>
+                        {searchTextController.clear(), searchText.clear()},
+                  ),
+
                   border: OutlineInputBorder(
                     // Use OutlineInputBorder to achieve rounded corners
                     borderRadius:
@@ -41,7 +57,7 @@ class _SearchTextfieldState extends State<SearchTextfield> {
                   fillColor: const Color.fromARGB(
                       255, 228, 228, 228), // Fill color for the TextField
                 ),
-                onChanged: (text){
+                onChanged: (text) {
                   searchText.setSearchText(text);
                 },
               ),

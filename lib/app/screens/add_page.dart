@@ -72,6 +72,13 @@ class _AddPageState extends State<AddPage> {
 
   bool isTJ = true;
   bool isKY = false;
+  
+  void dispose() {
+    songController.dispose();
+    artistController.dispose();
+    numberController.dispose();
+    super.dispose();
+  }
 
   bool controllerIsEmpty() {
     if (songController.text.isEmpty ||
@@ -208,7 +215,7 @@ class _AddPageState extends State<AddPage> {
                 ),
                 child: Text('추가',
                     style: TextStyle(fontSize: 15, color: Colors.white)),
-                onPressed: ()  async {
+                onPressed: () async {
                   if (!controllerIsEmpty()) {
                     String? documentId = await _firebaseAddSong(
                       songController.text,
