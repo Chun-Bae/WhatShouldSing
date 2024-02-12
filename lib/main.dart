@@ -9,6 +9,7 @@ import 'app/screens/main_page.dart';
 import '../providers/state_provider.dart';
 import '../providers/theme_provider.dart';
 import '../providers/search_provider.dart';
+import '../providers/nav_tap_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => UIState()),
         ChangeNotifierProvider(create: (context) => SongsState()),
         ChangeNotifierProvider(create: (context) => SearchState()),
+        ChangeNotifierProvider(create: (context) => NavTapState()),        
       ],
       child: WhatShouldSing(),
     ),
@@ -33,7 +35,7 @@ class WhatShouldSing extends StatelessWidget {
     return MaterialApp(
       title: '뭐부르지',
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: MainPage(),
     );
   }
 }

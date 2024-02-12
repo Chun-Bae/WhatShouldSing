@@ -1,7 +1,9 @@
 //package
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 //lib
 import '../../utils/colors.dart';
+import '../../../providers/nav_tap_provider.dart';
 
 class ListTapBar extends StatefulWidget {
   const ListTapBar({super.key});
@@ -11,16 +13,9 @@ class ListTapBar extends StatefulWidget {
 }
 
 class _ListTapBarState extends State<ListTapBar> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
+    final navTapState = Provider.of<NavTapState>(context);
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       items: <BottomNavigationBarItem>[
@@ -42,9 +37,9 @@ class _ListTapBarState extends State<ListTapBar> {
           label: '근처 노래방',
         ),
       ],
-      currentIndex: _selectedIndex, // active tab index
+      currentIndex: navTapState.selectedIndex, // active tab index
       selectedItemColor: themeColors[3], // active item color
-      onTap: _onItemTapped, // function to handle item tap
+      onTap: navTapState.onNavTapped, // function to handle item tap
     );
   }
 }
