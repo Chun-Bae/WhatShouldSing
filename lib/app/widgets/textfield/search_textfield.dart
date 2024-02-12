@@ -1,9 +1,21 @@
 //package
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+//lib
+import '../../../providers/search_provider.dart';
 
-class SearchTextfield extends StatelessWidget implements PreferredSizeWidget {
+class SearchTextfield extends StatefulWidget implements PreferredSizeWidget {
+  const SearchTextfield({super.key});
+
+  @override
+  State<SearchTextfield> createState() => _SearchTextfieldState();
+  Size get preferredSize => new Size.fromHeight(60.0);
+}
+
+class _SearchTextfieldState extends State<SearchTextfield> {
   @override
   Widget build(BuildContext context) {
+    final searchText = Provider.of<SearchState>(context);
     return Container(
       height: preferredSize.height,
       color: Colors.white,
@@ -29,6 +41,11 @@ class SearchTextfield extends StatelessWidget implements PreferredSizeWidget {
                   fillColor: const Color.fromARGB(
                       255, 228, 228, 228), // Fill color for the TextField
                 ),
+                onChanged: (text){
+                  print("text: $text");
+                  searchText.setSearchText(text);
+                  print("provider: ${searchText.searchText}");
+                },
               ),
             ),
           ],

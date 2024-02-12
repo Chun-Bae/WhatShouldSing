@@ -5,8 +5,10 @@ import 'package:firebase_core/firebase_core.dart';
 //lib
 import 'firebase_options.dart';
 import 'app/screens/login_page.dart';
+import 'app/screens/list_page.dart';
 import '../providers/state_provider.dart';
 import '../providers/theme_provider.dart';
+import '../providers/search_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +20,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => UIState()),
         ChangeNotifierProvider(create: (context) => SongsState()),
+        ChangeNotifierProvider(create: (context) => SearchState()),
       ],
       child: WhatShouldSing(),
     ),
@@ -30,7 +33,7 @@ class WhatShouldSing extends StatelessWidget {
     return MaterialApp(
       title: '뭐부르지',
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: ListPage(),
     );
   }
 }

@@ -13,8 +13,8 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
     final uiState = Provider.of<UIState>(context);
     final songsState = Provider.of<SongsState>(context);
 
-    return PreferredSize(
-      preferredSize: Size.fromHeight(50.0),
+    return Container(
+      height: preferredSize.height,
       child: ClipRRect(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(3)),
         child: AppBar(
