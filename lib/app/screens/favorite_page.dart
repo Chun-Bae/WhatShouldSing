@@ -40,19 +40,21 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
   void _addExpansionTile() {
     int newIndex = expansionTileList.length + 1;
     Widget newTile = Card(
+      elevation: 10.0, // 그림자의 깊이를 설정
+
+      color: Colors.orangeAccent,
       shape: RoundedRectangleBorder(
-        //borderRadius: BorderRadius.circular(10),
-        side: BorderSide(
-          color: isExpanded ? themeColors[0] : Colors.grey, // 펼쳐졌을 때와 아닐 때의 색상
-          width: 2,
-        ),
+        borderRadius: BorderRadius.circular(10.0),
       ),
       child: ExpansionTile(
         title: Text('${directoryTitleController.text}',
             style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.grey[200],
+        backgroundColor: themeColors[0],
         iconColor: themeColors[1],
         childrenPadding: EdgeInsets.all(10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         leading: Icon(Icons.folder),
         children: <Widget>[
           Container(
@@ -120,8 +122,12 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
             onPressed: () => showDialog<String>(
               context: context,
               builder: (BuildContext context) => Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                backgroundColor: themeColors[5],
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -133,19 +139,17 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
                         decoration: InputDecoration(
                           hintText: '폴더 이름',
                           border: OutlineInputBorder(
-                            // Use OutlineInputBorder to achieve rounded corners
-                            borderRadius: BorderRadius.circular(
-                                20.0), // Adjust the corner radius
-                            borderSide: BorderSide.none, // No border side
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide.none,
                           ),
-                          filled: true, // Enable the fillColor to be effective
-                          fillColor: const Color.fromARGB(255, 228, 228,
-                              228), // Fill color for the TextField
+                          filled: true,
+                          fillColor: Colors.white,
                         ),
                       ),
+                      SizedBox(height: 10.0),
                       Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           TextButton(
                             onPressed: () {
@@ -154,12 +158,29 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
                               Navigator.pop(context);
                             },
                             child: const Text('추가'),
+                            style: TextButton.styleFrom(
+                              primary: Colors.white,
+                              backgroundColor: themeColors[3],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20.0,
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
                             child: const Text('취소'),
+                            style: TextButton.styleFrom(
+                              primary: Colors.white,
+                              backgroundColor: themeColors[3],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
                           ),
                         ],
                       ),

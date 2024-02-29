@@ -6,4 +6,5 @@ final List<Color> themeColors = [
   Color(0xffF1A661),
   Color(0xffE38B29),
   Color(0xffE2BF9E),
+  Color.fromARGB(255, 255, 204, 108),
 ];
