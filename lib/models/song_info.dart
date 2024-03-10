@@ -7,7 +7,7 @@ class SongInfo {
   String? createdAt;
   String? userId;
   String? documentId;
-
+  List<String>? favoriteLists;
   bool isTJ;
   bool isKY;
 

@@ -25,7 +25,10 @@ class _LoadingPageState extends State<LoadingPage> {
 
   void _loadSongs() async {
     List<SongInfo> loadedSongs = await fetchSongs();
+    List<String> loadedFavorites = await fetchFavorites();
+
     Provider.of<SongsState>(context, listen: false).setSongsList(loadedSongs);
+    Provider.of<SongsState>(context, listen: false).setFavoritesList(loadedFavorites);
   }
 
   _navigateToLogin() async {

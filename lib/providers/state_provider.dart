@@ -2,11 +2,18 @@
 import 'package:flutter/material.dart';
 //lib
 import '../models/song_info.dart';
+import '../models/favorite_info.dart';
 import '../services/firestore_service.dart';
 
 class SongsState with ChangeNotifier {
   List<SongInfo> songsList = [];
+  List<String> favorites = [];
   List<bool> checked = [];
+  
+  void setFavoritesList(List<String> favorite) {
+    favorites = favorite;
+    notifyListeners();
+  }
 
   void setSongsList(List<SongInfo> loadedSongs) {
     songsList = loadedSongs;
@@ -51,4 +58,8 @@ class SongsState with ChangeNotifier {
     songsList = [];
     notifyListeners();
   }
+}
+
+class FavoritesState with ChangeNotifier {
+  List<FavoriteInfo> favoriteList = [];
 }

@@ -21,6 +21,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => UIState()),
         ChangeNotifierProvider(create: (context) => SongsState()),
+        ChangeNotifierProvider(create: (context) => FavoritesState()),
         ChangeNotifierProvider(create: (context) => SearchState()),
         ChangeNotifierProvider(create: (context) => NavTapState()),        
       ],

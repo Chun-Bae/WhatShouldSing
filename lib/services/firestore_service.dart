@@ -15,6 +15,26 @@ final String usersCollection = 'users';
 final String userId = FirebaseAuth.instance.currentUser?.uid ?? ""; 
 // 현재 user의 songs 컬렉션 정보
 final CollectionReference songsCollection = db.collection(usersCollection).doc(userId).collection('songs');
+final CollectionReference favoritesCollection = db.collection(usersCollection).doc(userId).collection('favorites');
+
+Future<List<String>> fetchFavorites() async {
+  List<String> favorites = [];
+  
+  try {    
+    QuerySnapshot querySnapshot = await favoritesCollection.get();
+
+    for (var doc in querySnapshot.docs) {
+      String favoriteName = doc.id; 
+      favorites.add(favoriteName);
+      print("문서이름: $favoriteName");
+    }
+    print("즐겨찾기 목록을 가져왔습니다.");
+  } catch (e) {
+    print("fetchFavorites 예외: $e");
+  }
+  return favorites; 
+}
+
 
 Future<List<SongInfo>> fetchSongs() async {
   List<SongInfo> songs = [];
@@ -29,7 +49,7 @@ Future<List<SongInfo>> fetchSongs() async {
     }
     print("노래를 가져왔습니다.");
   } catch (e) {
-    print("fetch 예외: ");
+    print("fetchSongs 예외: ");
     print(e);
   }
   return songs;
