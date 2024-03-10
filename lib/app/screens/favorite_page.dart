@@ -1,7 +1,9 @@
 //package
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 //lib
 import '../utils/colors.dart';
+import '../../providers/state_provider.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -105,6 +107,7 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
 
   @override
   Widget build(BuildContext context) {
+    final songsState = Provider.of<SongsState>(context);
     return Column(
       children: <Widget>[
         Padding(
@@ -154,6 +157,7 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
                           TextButton(
                             onPressed: () {
                               _addExpansionTile();
+                              songsState.addFavorite(directoryTitleController.text);                              
                               directoryTitleController.clear();
                               Navigator.pop(context);
                             },
