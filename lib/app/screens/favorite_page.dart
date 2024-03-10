@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 //lib
 import '../utils/colors.dart';
 import '../../providers/state_provider.dart';
+import '../../services/firestore_service.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -157,6 +158,7 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
                           TextButton(
                             onPressed: () {
                               _addExpansionTile();
+                              firebaseAddFavorite(directoryTitleController.text);
                               songsState.addFavorite(directoryTitleController.text);                              
                               directoryTitleController.clear();
                               Navigator.pop(context);

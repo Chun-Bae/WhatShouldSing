@@ -6,25 +6,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/song_info.dart';
 
 // firestore 데이터 베이스
-final FirebaseFirestore db = FirebaseFirestore.instance; 
+final FirebaseFirestore db = FirebaseFirestore.instance;
 // 현재 로그인한 user
-User? currentUser = FirebaseAuth.instance.currentUser; 
+User? currentUser = FirebaseAuth.instance.currentUser;
 // users 컬렉션
 final String usersCollection = 'users';
 // 현재 사용자의 UID
-final String userId = FirebaseAuth.instance.currentUser?.uid ?? ""; 
+final String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
 // 현재 user의 songs 컬렉션 정보
-final CollectionReference songsCollection = db.collection(usersCollection).doc(userId).collection('songs');
-final CollectionReference favoritesCollection = db.collection(usersCollection).doc(userId).collection('favorites');
+final CollectionReference songsCollection =
+    db.collection(usersCollection).doc(userId).collection('songs');
+final CollectionReference favoritesCollection =
+    db.collection(usersCollection).doc(userId).collection('favorites');
 
 Future<List<String>> fetchFavorites() async {
   List<String> favorites = [];
-  
-  try {    
+
+  try {
     QuerySnapshot querySnapshot = await favoritesCollection.get();
 
     for (var doc in querySnapshot.docs) {
-      String favoriteName = doc.id; 
+      String favoriteName = doc.id;
       favorites.add(favoriteName);
       print("문서이름: $favoriteName");
     }
@@ -32,13 +34,12 @@ Future<List<String>> fetchFavorites() async {
   } catch (e) {
     print("fetchFavorites 예외: $e");
   }
-  return favorites; 
+  return favorites;
 }
-
 
 Future<List<SongInfo>> fetchSongs() async {
   List<SongInfo> songs = [];
-  
+
   try {
     QuerySnapshot querySnapshot = await songsCollection.get();
 
@@ -93,4 +94,24 @@ Future<String?> firebaseAddSong(
     print("노래 정보 추가 중 오류 발생: $e");
   }
   return null;
+}
+
+Future<void> firebaseAddFavorite(String favorite) async {
+  try {
+    // 즐겨찾기 이름을 문서 ID로 사용하여 문서 참조 생성
+    DocumentReference docRef = favoritesCollection.doc(favorite);
+    
+    // 문서에 저장할 데이터
+    Map<String, dynamic> data = {
+      'createdAt': FieldValue.serverTimestamp(), // 생성 시간을 서버 시간으로 설정
+      // 필요한 다른 필드를 여기에 추가
+    };
+    
+    // 생성한 문서 참조에 데이터 저장
+    await docRef.set(data);
+    
+    print("$favorite 즐겨찾기가 성공적으로 추가되었습니다.(firebase)");
+  } catch (e) {
+    print("firebaseAddFavorite에서 예외 발생: $e");
+  }
 }
