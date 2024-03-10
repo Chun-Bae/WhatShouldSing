@@ -40,18 +40,30 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
   List<Widget> expansionTileList = [];
   bool isExpanded = false;
 
-  void _addExpansionTile() {
-    int newIndex = expansionTileList.length + 1;
-    Widget newTile = Card(
-      elevation: 10.0, // 그림자의 깊이를 설정
+  @override
+  void initState() {
+    super.initState();
+    _loadFavorites();
+  }
 
+  void _loadFavorites() async {
+    final favoriteList =
+        Provider.of<SongsState>(context, listen: false).favorites;
+
+    favoriteList.forEach((favorite) {
+      _addExpansionTile(favorite);
+    });
+  }
+
+  void _addExpansionTile(String title) {
+    Widget newTile = Card(
+      elevation: 10.0,
       color: Colors.orangeAccent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ExpansionTile(
-        title: Text('${directoryTitleController.text}',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('${title}', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: themeColors[0],
         iconColor: themeColors[1],
         childrenPadding: EdgeInsets.all(10),
@@ -157,9 +169,11 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
                         children: <Widget>[
                           TextButton(
                             onPressed: () {
-                              _addExpansionTile();
-                              firebaseAddFavorite(directoryTitleController.text);
-                              songsState.addFavorite(directoryTitleController.text);                              
+                              _addExpansionTile(directoryTitleController.text);
+                              firebaseAddFavorite(
+                                  directoryTitleController.text);
+                              songsState
+                                  .addFavorite(directoryTitleController.text);
                               directoryTitleController.clear();
                               Navigator.pop(context);
                             },
