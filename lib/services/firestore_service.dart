@@ -54,3 +54,43 @@ Future<List<SongInfo>> fetchSongs() async {
   }
   return songs;
 }
+
+Future<String?> firebaseAddSong(
+    String song, String artist, String songNumber, bool isTJ, bool isKY) async {
+// 보안 규칙 추가 필수
+// rules_version = '2';
+
+// service cloud.firestore {
+//   match /databases/{database}/documents {
+//     match /{document=**} {
+//       allow read, write: if request.auth != null;
+//     }
+//   }
+// }
+
+  try {
+    // Firestore에 사용자 ID를 포함한 노래 정보를 추가하는 문서 생성
+    DocumentReference docRef = await songsCollection.add({
+      'userId': userId, // 현재 사용자의 UID 추가
+      'song': song,
+      'artist': artist,
+      'songNumber': songNumber,
+      'isTJ': isTJ,
+      'isKY': isKY,
+      'createdAt':
+          FieldValue.serverTimestamp(), // Firestore 서버 시간을 기준으로 타임스탬프 생성
+    });
+    // 생성된 문서의 ID를 가져옴
+    String documentId = docRef.id;
+    // 동일한 문서에 documentId 필드를 추가하거나 업데이트
+    await docRef.update({
+      'documentId': documentId,
+    });
+
+    print("노래 정보가 성공적으로 추가되었습니다.");
+    return documentId;
+  } catch (e) {
+    print("노래 정보 추가 중 오류 발생: $e");
+  }
+  return null;
+}

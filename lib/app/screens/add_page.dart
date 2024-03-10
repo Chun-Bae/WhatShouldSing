@@ -1,64 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../utils/colors.dart';
 import '../../models/song_info.dart';
 import '../widgets/appbar/add_page_appbar.dart';
 import '../../providers/state_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-final FirebaseFirestore db = FirebaseFirestore.instance;
-User? currentUser = FirebaseAuth.instance.currentUser;
-// 상위 컬렉션과 문서 ID를 지정
-final String parentCollectionPath = 'users';
-
-final String userId =
-    FirebaseAuth.instance.currentUser?.uid ?? ""; // 현재 사용자의 UID
-
-// 서브컬렉션과 새 문서를 추가, 'songs'라는 서브컬렉션에 노래 정보를 추가
-final CollectionReference subCollection =
-    db.collection(parentCollectionPath).doc(userId).collection('songs');
-
-Future<String?> _firebaseAddSong(
-    String song, String artist, String songNumber, bool isTJ, bool isKY) async {
-// 보안 규칙 추가 필수
-// rules_version = '2';
-
-// service cloud.firestore {
-//   match /databases/{database}/documents {
-//     match /{document=**} {
-//       allow read, write: if request.auth != null;
-//     }
-//   }
-// }
-
-  try {
-    // Firestore에 사용자 ID를 포함한 노래 정보를 추가하는 문서 생성
-    DocumentReference docRef = await subCollection.add({
-      'userId': userId, // 현재 사용자의 UID 추가
-      'song': song,
-      'artist': artist,
-      'songNumber': songNumber,
-      'isTJ': isTJ,
-      'isKY': isKY,
-      'createdAt':
-          FieldValue.serverTimestamp(), // Firestore 서버 시간을 기준으로 타임스탬프 생성
-    });
-    // 생성된 문서의 ID를 가져옴
-    String documentId = docRef.id;
-    // 동일한 문서에 documentId 필드를 추가하거나 업데이트
-    await docRef.update({
-      'documentId': documentId,
-    });
-
-    print("노래 정보가 성공적으로 추가되었습니다.");
-    return documentId;
-  } catch (e) {
-    print("노래 정보 추가 중 오류 발생: $e");
-  }
-  return null;
-}
+import '../../services/firestore_service.dart';
 
 class AddPage extends StatefulWidget {
   @override
@@ -217,7 +164,7 @@ class _AddPageState extends State<AddPage> {
                     style: TextStyle(fontSize: 15, color: Colors.white)),
                 onPressed: () async {
                   if (!controllerIsEmpty()) {
-                    String? documentId = await _firebaseAddSong(
+                    String? documentId = await firebaseAddSong(
                       songController.text,
                       artistController.text,
                       numberController.text,

@@ -9,7 +9,7 @@ class SongsState with ChangeNotifier {
   List<SongInfo> songsList = [];
   List<String> favorites = [];
   List<bool> checked = [];
-  
+
   void setFavoritesList(List<String> favorite) {
     favorites = favorite;
     notifyListeners();
@@ -23,6 +23,11 @@ class SongsState with ChangeNotifier {
 
   void addSong(SongInfo songInfo) async {
     songsList.add(songInfo);
+    notifyListeners();
+  }
+
+  void addFavorite(String favorite) async {
+    favorites.add(favorite);
     notifyListeners();
   }
 
