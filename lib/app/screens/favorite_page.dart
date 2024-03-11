@@ -72,6 +72,22 @@ class _DynamicExpansionTileListState extends State<DynamicExpansionTileList> {
         ),
         leading: Icon(Icons.folder),
         children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.all(8.0),
+                child: IconButton(
+                  onPressed: (){                    //삭제 기능 구현
+                  },
+                  icon: Icon(
+                    Icons.delete_rounded,
+                    color: const Color.fromARGB(255, 65, 65, 65),
+                  ),
+                ),
+              ),
+            ],
+          ),
           Container(
             margin: EdgeInsets.all(8.0),
             decoration: BoxDecoration(

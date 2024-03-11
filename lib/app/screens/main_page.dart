@@ -23,7 +23,6 @@ class _MainPageState extends State<MainPage> {
     final navTapState = Provider.of<NavTapState>(context);
     final isSelectionMode = Provider.of<UIState>(context).isSelectionMode;
     return Scaffold(
-      //AppBar
       appBar: MainAppbar(
         bottom: navTapState.selectedIndex == 0 ? SearchTextfield() : null,
       ),

@@ -3,16 +3,47 @@ import '../../utils/colors.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/state_provider.dart';
 import '../../../providers/theme_provider.dart';
+import '../../../providers/nav_tap_provider.dart';
 
 class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   MainAppbar({Key? key, required this.bottom}) : super(key: key);
+  Widget? buildActionBasedOnIndex(BuildContext context) {
+    final uiState = Provider.of<UIState>(context);
+    final songsState = Provider.of<SongsState>(context);
+    final selectedIndex = Provider.of<NavTapState>(context).selectedIndex;
+
+    switch (selectedIndex) {
+      case 0:
+        return (!uiState.isSelectionMode)
+            ? Container(
+                child: IconButton(
+                  onPressed: () {
+                    uiState.toggleSelectionMode();
+                  },
+                  icon: Icon(
+                    Icons.delete_rounded,
+                    color: const Color.fromARGB(255, 65, 65, 65),
+                  ),
+                ),
+              )
+            : Container(
+                child: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    uiState.toggleSelectionMode();
+                    songsState.checked = List.generate(
+                        songsState.songsList.length, (index) => false);
+                  },
+                ),
+              );
+      default:
+        return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final uiState = Provider.of<UIState>(context);
-    final songsState = Provider.of<SongsState>(context);
-
     return Container(
       height: preferredSize.height,
       child: ClipRRect(
@@ -40,35 +71,9 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
               ],
             ),
           ),
-          actions: [
-            if(this.bottom != null)
-            (!uiState.isSelectionMode)
-                ? PopupMenuButton<String>(
-                    offset: Offset(0, 30),
-                    onSelected: (value) {
-                      if (value == 'delete') {
-                        uiState.toggleSelectionMode();
-                      }
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return [
-                        PopupMenuItem<String>(
-                          height: 20,
-                          value: 'delete',
-                          child: Text('삭제'),
-                        ),
-                      ];
-                    },
-                    icon: Icon(Icons.more_horiz),
-                  )
-                : IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      uiState.toggleSelectionMode();
-                      songsState.checked = List.generate(
-                          songsState.songsList.length, (index) => false);
-                    },
-                  ),
+          actions: <Widget>[
+            if (buildActionBasedOnIndex(context) != null)
+              buildActionBasedOnIndex(context)!,
           ],
         ),
       ),
@@ -76,5 +81,6 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => this.bottom == null ? Size.fromHeight(50.0) : Size.fromHeight(110.0);
+  Size get preferredSize =>
+      this.bottom == null ? Size.fromHeight(50.0) : Size.fromHeight(110.0);
 }
