@@ -25,11 +25,13 @@ class SongsState with ChangeNotifier {
 
   void addSong(SongInfo songInfo) async {
     songsList.add(songInfo);
+    songChecked = List.generate(songsList.length, (index) => false);
     notifyListeners();
   }
 
   void addFavorite(String favorite) async {
     favorites.add(favorite);
+    favoritesChecked = List.generate(favorites.length, (index) => false);
     notifyListeners();
   }
 
