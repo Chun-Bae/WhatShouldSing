@@ -8,16 +8,18 @@ import '../services/firestore_service.dart';
 class SongsState with ChangeNotifier {
   List<SongInfo> songsList = [];
   List<String> favorites = [];
-  List<bool> checked = [];
-
-  void setFavoritesList(List<String> favorite) {
-    favorites = favorite;
+  List<bool> songChecked = [];
+  List<bool> favoritesChecked = [];
+  
+  void setSongsList(List<SongInfo> loadedSongs) {
+    songsList = loadedSongs;
+    songChecked = List.generate(songsList.length, (index) => false);
     notifyListeners();
   }
 
-  void setSongsList(List<SongInfo> loadedSongs) {
-    songsList = loadedSongs;
-    checked = List.generate(songsList.length, (index) => false);
+  void setFavoritesList(List<String> favorite) {
+    favorites = favorite;
+    favoritesChecked = List.generate(favorites.length, (index) => false);
     notifyListeners();
   }
 
@@ -36,10 +38,30 @@ class SongsState with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteSelectedFavorites() async {
+    List<String> itemsToRemove = [];
+    for (int i = 0; i < favoritesChecked.length; i++) {
+      if (favoritesChecked[i]) {
+        itemsToRemove.add(favorites[i]);
+      }
+    }
+
+    // Firestore에서 해당 문서 삭제
+    for (var favorite in itemsToRemove) {
+      await favoritesCollection.doc(favorite).delete();
+      print("Document with ID: ${favorite} deleted");
+    }
+
+    // 로컬 목록에서 항목 삭제 및 상태 업데이트
+    favorites.removeWhere((favorite) => itemsToRemove.contains(favorite));
+    favoritesChecked = List.generate(songsList.length, (index) => false);
+    notifyListeners();
+  }
+
   void deleteSelectedItems() async {
     List<SongInfo> itemsToRemove = [];
-    for (int i = 0; i < checked.length; i++) {
-      if (checked[i]) {
+    for (int i = 0; i < songChecked.length; i++) {
+      if (songChecked[i]) {
         itemsToRemove.add(songsList[i]);
       }
     }
@@ -55,7 +77,7 @@ class SongsState with ChangeNotifier {
 
     // 로컬 목록에서 항목 삭제 및 상태 업데이트
     songsList.removeWhere((song) => itemsToRemove.contains(song));
-    checked = List.generate(songsList.length, (index) => false);
+    songChecked = List.generate(songsList.length, (index) => false);
     notifyListeners();
   }
 
@@ -65,6 +87,4 @@ class SongsState with ChangeNotifier {
   }
 }
 
-class FavoritesState with ChangeNotifier {
-  List<FavoriteInfo> favoriteList = [];
-}
+class FavoritesState with ChangeNotifier {}

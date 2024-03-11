@@ -30,7 +30,7 @@ class _MainAddButton extends State<MainAddButton> {
             MaterialPageRoute(builder: (context) => AddPage()),
           ).then((_) {
             // 뒤로 가기가 실행된 후 이곳에서 setState를 호출하여 위젯을 새로고침합니다.
-            songsState.checked =
+            songsState.songChecked =
                 List.generate(songsState.songsList.length, (index) => false);
           });
         },

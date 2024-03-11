@@ -14,7 +14,7 @@ class ListTileBody extends StatefulWidget {
 class _ListTileBody extends State<ListTileBody> {
   Widget build(BuildContext context) {
     final isSelectionMode = Provider.of<UIState>(context).isSelectionMode;
-    final checked = Provider.of<SongsState>(context).checked;
+    final checked = Provider.of<SongsState>(context).songChecked;
     final songsList = Provider.of<SongsState>(context).songsList;
     final searchText = Provider.of<SearchState>(context).searchText;
 

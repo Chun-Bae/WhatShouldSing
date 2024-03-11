@@ -15,6 +15,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
 
     switch (selectedIndex) {
       case 0:
+      case 1:
         return (!uiState.isSelectionMode)
             ? Container(
                 child: IconButton(
@@ -32,7 +33,7 @@ class MainAppbar extends StatelessWidget implements PreferredSizeWidget {
                   icon: Icon(Icons.close),
                   onPressed: () {
                     uiState.toggleSelectionMode();
-                    songsState.checked = List.generate(
+                    songsState.songChecked = List.generate(
                         songsState.songsList.length, (index) => false);
                   },
                 ),
